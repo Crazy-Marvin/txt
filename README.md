@@ -5,6 +5,7 @@
 [![Latest tag](https://img.shields.io/github/tag/Crazy-Marvin/txt.svg?style=flat)](https://github.com/Crazy-Marvin/txt/tags)
 [![Issues](https://img.shields.io/github/issues/Crazy-Marvin/txt.svg?style=flat)](https://github.com/Crazy-Marvin/txt/issues)
 [![Pull requests](https://img.shields.io/github/issues-pr/Crazy-Marvin/txt.svg?style=flat)](https://github.com/Crazy-Marvin/txt/pulls)
+
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/e6cf1c083cf146489628efcdd189a53d)](https://www.codacy.com/app/CrazyMarvin/txt?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Crazy-Marvin/txt&amp;utm_campaign=Badge_Grade)
 [![codecov](https://codecov.io/gh/Crazy-Marvin/txt/branch/master/graph/badge.svg)](https://codecov.io/gh/Crazy-Marvin/txt)
 Crowdin
