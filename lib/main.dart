@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:txt/text/markdown_text_field.dart';
 import 'package:txt/text/markdown_text_span.dart';
+import 'package:txt/text/text_span_utils.dart';
 
 void main() {
   runApp(
@@ -82,7 +82,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   TextEditingController controller = TextEditingController(
-      text: "_Another_ test **bold** and ~~lol~~, that's [a link](http://highway.to.hell/index.php)");
+      text:
+      "_Another_ test **bold** and ~~lol~~, that's [a link](http://highway.to.hell/index.php)");
 
   @override
   Widget build(BuildContext context) {
@@ -104,22 +105,34 @@ class _MyAppState extends State<MyApp> {
               ),
               child: Column(
                 children: <Widget>[
-                  TextField(
-                    controller: controller,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                  ),
-                  MarkdownTextField(
-                    controller: controller,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                  ),
-                  Text(
-                    'Button tapped $_counter time${_counter == 1 ? '' : 's'}.',
-                  ),
+//                  TextField(
+//                    controller: controller,
+//                    keyboardType: TextInputType.multiline,
+//                    maxLines: null,
+//                  ),
+//                  MarkdownTextField(
+//                    controller: controller,
+//                    keyboardType: TextInputType.multiline,
+//                    maxLines: null,
+//                  ),
                   Text.rich(
                     MarkdownTextSpan(
-                        text: "**Reading** ~~and~~ _Writing_ `xml`-files"),
+                        text: "Button tapped **$_counter** time${_counter == 1
+                            ? ''
+                            : 's'}."),
+                  ),
+                  OverlaySpanTest(
+                    textSpan: MarkdownTextSpan(
+                      text: "_Another_ test **bold** and ~~lol~~, "
+                          "that's [a link](http://highway.to.hell/index.php)",
+                    ),
+                  ),
+                  OverlaySpanTest(
+                    textSpan: MarkdownTextSpan(
+                      text: "_Another_ test **bold** and ~~lol~~, "
+                          "that's [a link](http://highway.to.hell/index.php)",
+                      stripMarkdown: false,
+                    ),
                   ),
                 ],
               ),
@@ -133,5 +146,50 @@ class _MyAppState extends State<MyApp> {
         child: Icon(Icons.add),
       ),
     );
+  }
+}
+
+class OverlaySpanTest extends StatelessWidget {
+  static const TextStyle _defaultOverlayStyle = const TextStyle(
+    backgroundColor: Color.fromRGBO(255, 255, 0, 0.75),
+  );
+
+  final TextSpan textSpan;
+  final TextStyle overlayStyle;
+
+  int get length => _textSpanLength(textSpan);
+
+  const OverlaySpanTest({
+    Key key,
+    this.textSpan,
+    this.overlayStyle = _defaultOverlayStyle,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: List.generate(length, (int position) {
+        return Text.rich(
+          applyTextStyle(
+            textSpan,
+            TextRange(start: position, end: position + 1),
+            overlayStyle,
+          ),
+        );
+      }),
+    );
+  }
+
+  int _textSpanLength(TextSpan span) {
+    int result = 0;
+    if (span.text != null) {
+      result += span.text.length;
+    }
+    if (span.children != null) {
+      for (TextSpan child in span.children) {
+        result += _textSpanLength(child);
+      }
+    }
+    return result;
   }
 }
