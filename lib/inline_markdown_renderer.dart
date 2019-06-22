@@ -3,7 +3,9 @@ import 'dart:collection';
 import 'package:flutter/material.dart' as material;
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart' as widgets;
+import 'package:html_unescape/html_unescape.dart';
 import 'package:markdown/markdown.dart';
+
 
 abstract class NodeRenderer<T> implements NodeVisitor {
   T render(List<Node> nodes);
@@ -125,8 +127,14 @@ class TextSpanRenderer implements NodeRenderer<widgets.TextSpan> {
   void visitText(Text text) {
     childQueue.last.add(
       widgets.TextSpan(
-        text: text.text,
+        text: _resolveHtmlEntities(text.text),
       ),
     );
+  }
+
+  static final HtmlUnescape unescape = new HtmlUnescape();
+
+  String _resolveHtmlEntities(String text) {
+    return unescape.convert(text);
   }
 }
