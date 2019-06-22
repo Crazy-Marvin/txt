@@ -31,7 +31,6 @@ class MarkdownTextSpan extends TextSpan {
       extensionSet: ExtensionSet.none,
     );
     List<String> lines = text?.replaceAll('\r\n', '\n')?.split('\n') ?? [];
-    debugPrint(lines.toString());
     List<Node> nodes = document.parseLines(lines);
     TextSpanRenderer renderer = TextSpanRenderer(stripMarkdown: stripMarkdown);
     TextSpan markdownSpan = renderer.render(nodes);
