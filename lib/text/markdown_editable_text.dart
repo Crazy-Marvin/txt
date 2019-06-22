@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:txt/text/text_span_utils.dart';
 
 import 'markdown_text_span.dart';
 
@@ -93,35 +94,22 @@ class MarkdownEditableText extends EditableText {
 class MarkdownEditableTextState extends EditableTextState {
   TextEditingValue get _value => widget.controller.value;
 
+  static const TextStyle _composingStyle = const TextStyle(
+    decoration: TextDecoration.underline,
+  );
+
   @override
   TextSpan buildTextSpan() {
-    if (_value.composing.isValid) {
-      final TextStyle composingStyle = widget.style.merge(
-        const TextStyle(decoration: TextDecoration.underline),
-      );
-
-      return TextSpan(style: widget.style, children: <TextSpan>[
-        MarkdownTextSpan(
-          text: _value.composing.textBefore(_value.text),
-          stripMarkdown: false,
-        ),
-        MarkdownTextSpan(
-          style: composingStyle,
-          text: _value.composing.textInside(_value.text),
-          stripMarkdown: false,
-        ),
-        MarkdownTextSpan(
-          text: _value.composing.textAfter(_value.text),
-          stripMarkdown: false,
-        ),
-      ]);
-    }
-
-    String text = _value.text;
-    return MarkdownTextSpan(
+    TextSpan span = MarkdownTextSpan(
       style: widget.style,
-      text: text,
+      text: _value.text,
       stripMarkdown: false,
     );
+
+    if (_value.composing.isValid) {
+      return applyTextStyle(span, _value.composing, _composingStyle);
+    }
+
+    return span;
   }
 }
