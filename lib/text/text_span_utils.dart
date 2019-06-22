@@ -9,13 +9,13 @@ TextSpan applyTextStyle(TextSpan span, TextRange range, TextStyle style) {
 
   // If the range doesn't contain anything we don't need to change any style.
   if (_intersectRange(range, spanRange).isCollapsed) {
-    debugPrint("Pruning because range is collapsed.");
+    //debugPrint("Pruning because range is collapsed.");
     return span;
   }
 
   // If the range contains the whole span, we can wrap the whole span.
   if (_containsRange(range, spanRange)) {
-    debugPrint("Pruning because contains whole span.");
+    //debugPrint("Pruning because contains whole span.");
     return TextSpan(style: style, children: [span]);
   }
 
