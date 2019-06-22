@@ -1,195 +1,121 @@
+import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/painting.dart';
 
-/// Split the [span] at the [range`s] start and end to override
-/// the inner text's style.
-TextSpan addTextStyleInRange(
-    TextSpan span, TextRange range, TextStyle newStyleInRange) {
-  assert(range.isValid);
-  assert(range.isNormalized);
+/// Inside the given [range], apply the [style] to the [span].
+TextSpan applyTextStyle(TextSpan span, TextRange range, TextStyle style) {
+  TextRange spanRange = TextSpanTextRange(span);
 
   // If the range doesn't contain anything we don't need to change any style.
-  if (range.isCollapsed || range.start >= _length(span) - 1 || range.end == 0) {
+  if (_intersectRange(range, spanRange).isCollapsed) {
     debugPrint("Pruning because range is collapsed.");
     return span;
   }
 
   // If the range contains the whole span, we can wrap the whole span.
-  if (range.start == 0 && range.end >= _length(span) - 1) {
+  if (_containsRange(range, spanRange)) {
     debugPrint("Pruning because contains whole span.");
-    return TextSpan(style: newStyleInRange, children: [span]);
+    return TextSpan(style: style, children: [span]);
   }
 
-  debugPrint(range.toString());
-
-  TextSpan startSpan = _getSpanForPosition(span, range.start);
-  TextSpan endSpan = _getSpanForPosition(span, range.end);
-
-  debugPrint("span: " + span.toString());
-  debugPrint(
-      "span (plain): " + span.toPlainText(includeSemanticsLabels: false));
-  debugPrint("startSpan: " + startSpan.toString());
-  debugPrint("endSpan: " + endSpan.toString());
-
-  assert(startSpan != null);
-  assert(endSpan != null);
-
-  String text;
-  List<TextSpan> children = [];
-
-  if (startSpan == span) {
-    assert(span.text != null);
-
-    // The original span should contain only the text
-    // before the range to style.
-    text = range.textBefore(span.text);
-
-    // We'll need to move the new styled span into
-    // the original span's children list.
-    if (endSpan == span) {
-      // Create two new spans:
-      // the styled one and a text span containing
-      // the rest of the original span's text.
-      children.add(
-        TextSpan(
-          style: newStyleInRange,
-          text: range.textInside(span.text),
-        ),
-      );
-      children.add(
-        TextSpan(
-          text: range.textAfter(span.text),
-        ),
-      );
-
-      // As the range is already exhausted,
-      // we can copy the rest of the original span's children
-      // and return the new span.
-      if (span.children != null) {
-        children.addAll(span.children);
-      }
-
-      return TextSpan(
-        style: span.style,
-        text: text,
-        children: children,
-        recognizer: span.recognizer,
-        semanticsLabel: span.semanticsLabel,
-      );
-    } else {
-      // The rest of the original span's text should be styled.
-      String startSpanTextInRange = range.textInside(span.text);
-      children.add(
-        TextSpan(
-          style: newStyleInRange,
-          text: startSpanTextInRange,
-        ),
-      );
-
-      // This offset should move the range relative to the current span.
-      int offset = -span.text.length;
-      // Keep track of the character count, we already consumed
-      // of the range of text to style.
-      int consumed = startSpanTextInRange.length;
-
-      children.addAll(_addTextStyleInRangeChildren(
-          span.children, range, newStyleInRange, offset, consumed));
-
-      return TextSpan(
-        style: span.style,
-        text: text,
-        children: children,
-        recognizer: span.recognizer,
-        semanticsLabel: span.semanticsLabel,
-      );
-    }
-  } else {
-    // Both start and end of the text range are inside
-    // the original span's children.
-
-    // This offset should move the range relative to the current span.
-    int offset = -(span.text?.length ?? 0);
-    // Keep track of the character count, we already consumed
-    // of the range of text to style.
-    int consumed = 0;
-
-    children.addAll(_addTextStyleInRangeChildren(
-        span.children, range, newStyleInRange, offset, consumed));
-
-    return TextSpan(
-      style: span.style,
-      text: span.text,
-      children: children,
-      recognizer: span.recognizer,
-      semanticsLabel: span.semanticsLabel,
-    );
-  }
+  return TextSpan(
+    style: span.style,
+    children: [
+      ..._applyTextStyleToText(span.text, range, style),
+      ..._applyTextStyleToTextSpans(span.children, range, style)
+    ],
+    recognizer: span.recognizer,
+    semanticsLabel: span.semanticsLabel,
+  );
 }
 
-List<TextSpan> _addTextStyleInRangeChildren(List<TextSpan> spans,
-    TextRange range, TextStyle newStyleInRange, int offset, int consumed) {
-  List<TextSpan> children = [];
+/// Inside the given [range], apply the [style] to the [text].
+Iterable<TextSpan> _applyTextStyleToText(String text, TextRange range,
+    TextStyle style) {
+  if (text == null) return [];
 
-  for (TextSpan child in spans) {
-    // TODO Can we remove this?
-    if (range.start + offset < 0 || range.end + offset - consumed < 0) {
-      children.add(child);
-      continue;
-    }
+  range = _intersectRange(range, StringTextRange(text));
 
-    TextRange offsetRange = TextRange(
-      start: range.start + offset,
-      end: range.end + offset - consumed,
-    );
-    debugPrint("offset: $offset");
-    debugPrint("consumed: $consumed");
-    debugPrint("offsetRange: $offsetRange");
-    if (offsetRange.isValid && offsetRange.isNormalized) {
-      debugPrint("recursion");
-      // The offset range is still not empty.
-      // Recursively style the child and add it to the children list.
-      children.add(
-        addTextStyleInRange(child, offsetRange, newStyleInRange),
-      );
-      // As we consumed the child and the range must be consecutive,
-      // we advance both the offset and the
-      int childLength = _length(child);
-      offset -= childLength;
-      consumed += childLength;
-    } else {
-      debugPrint("justAdd");
-      // The offset range is empty. Just append the child.
-      children.add(child);
-    }
+  if (!range.isValid) {
+    return [
+      TextSpan(text: text),
+    ];
   }
 
-  return children;
+  return [
+    TextSpan(
+      text: range.textBefore(text),
+    ),
+    TextSpan(
+      style: style,
+      text: range.textInside(text),
+    ),
+    TextSpan(
+      text: range.textAfter(text),
+    ),
+  ];
 }
 
-int _length(TextSpan span) {
+/// Inside the given [range], apply the [style] to the [spans].
+Iterable<TextSpan> _applyTextStyleToTextSpans(Iterable<TextSpan> spans,
+    TextRange range, TextStyle style) {
+  if (spans == null) return [];
+
+  var off = 0;
+  return spans.map((TextSpan span) {
+    TextSpan newSpan =
+    applyTextStyle(span, _offsetRange(range, off), style);
+    off -= _length(span);
+    return newSpan;
+  });
+}
+
+/// Text range that contains exactly a [String].
+@immutable
+class StringTextRange extends TextRange {
+  const StringTextRange(String text) : super(start: 0, end: text.length);
+}
+
+/// Text range that contains exactly a [TextRange].
+@immutable
+class TextSpanTextRange extends TextRange {
+  TextSpanTextRange(TextSpan span)
+      : super(start: 0, end: _length(span));
+}
+
+/// Increment the [receiver] range's start and end positions
+/// by the given [offset].
+TextRange _offsetRange(TextRange receiver, int offset) {
+  return TextRange(
+    start: max(receiver.start + offset, -1),
+    end: max(receiver.end + offset, -1),
+  );
+}
+
+/// Intersect the [receiver] range with the [other] range.
+/// If the intersection is empty [TextRange.empty] is returned.
+TextRange _intersectRange(TextRange receiver, TextRange other) {
+  int start = max(receiver.start, other.start);
+  int end = min(receiver.end, other.end);
+  if (end < start) return TextRange.empty;
+  return TextRange(start: start, end: end);
+}
+
+/// Check, whether the [receiver] range fully contains the [other] range.
+bool _containsRange(TextRange receiver, TextRange other) =>
+    receiver.start <= other.start && other.end <= receiver.end;
+
+/// Get the total length of the [receiver] span.
+int _length(TextSpan receiver) {
   int result = 0;
-  if (span.text != null) {
-    result += span.text.length;
+  if (receiver.text != null) {
+    result += receiver.text.length;
   }
-  if (span.children != null) {
-    for (TextSpan child in span.children) {
+  if (receiver.children != null) {
+    for (TextSpan child in receiver.children) {
       result += _length(child);
     }
   }
   return result;
-}
-
-TextSpan _getSpanForPosition(TextSpan span, int position) {
-  if (span.text != null) {
-    if (position >= 0 && position < span.text.length) return span;
-    position -= span.text.length;
-  }
-  if (span.children != null) {
-    for (TextSpan child in span.children) {
-      var result = _getSpanForPosition(child, position);
-      if (result != null) return result;
-      position -= _length(child);
-    }
-  }
-  return null;
 }
