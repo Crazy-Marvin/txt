@@ -95,7 +95,7 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(8.0),
+        padding: EdgeInsets.all(16.0),
         child: LayoutBuilder(builder:
             (BuildContext context, BoxConstraints viewportConstraints) {
           return SingleChildScrollView(
