@@ -3,9 +3,10 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:txt/text/markdown_text_field.dart';
-import 'package:txt/text/markdown_text_span.dart';
+import 'package:txt/markdown/markdown_syntax_highlight_text_span.dart';
+import 'package:txt/markdown/markdown_text_field.dart';
 
 void main() {
   runApp(
@@ -83,15 +84,18 @@ class _MyAppState extends State<MyApp> {
 
   TextEditingController controller = TextEditingController(
       text:
-      "_Another_ test **bold** and ~~lol~~, that's [a link](http://highway.to.hell/index.php)");
+      "_Another_ test **bold** and ~~lol~~, that's [a link](http://highway.to.hell/index.php). Want some `code`? Wonderfull!"
+//          "\n\n$markdownSample"
+  );
 
   @override
   Widget build(BuildContext context) {
-    ThemeData theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text.rich(
-          MarkdownTextSpan(text: "**Reading** ~~and~~ _Writing_ `xml`-files"),
+          MarkdownSyntaxHighlightTextSpan(
+            data: "**Reading** ~~and~~ _Writing_ `xml`-files",
+          ),
         ),
       ),
       body: Padding(
@@ -105,21 +109,40 @@ class _MyAppState extends State<MyApp> {
               ),
               child: Column(
                 children: <Widget>[
-                  TextField(
-                    controller: controller,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                  ),
-                  MarkdownTextField(
-                    controller: controller,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: <Widget>[
+                      Expanded(
+                        child: TextField(
+                          controller: controller,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          style: TextStyle(fontFamily: "monospace"),
+                        ),
+                      ),
+                      Expanded(
+                        child: MarkdownTextField(
+                          controller: controller,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          style: TextStyle(fontFamily: "monospace"),
+                        ),
+                      ),
+                    ],
                   ),
                   Text.rich(
-                    MarkdownTextSpan(
-                        text: "Button tapped **$_counter** time${_counter == 1
-                            ? ''
-                            : 's'}."),
+                    MarkdownSyntaxHighlightTextSpan(
+                      data: "Button tapped **$_counter** "
+                          "time${_counter == 1 ? "" : "s"}.",
+                    ),
+                  ),
+                  Text.rich(
+                    MarkdownSyntaxHighlightTextSpan(
+                      data: controller.value.text,
+                    ),
+                  ),
+                  MarkdownBody(
+                    data: controller.value.text,
                   ),
                 ],
               ),

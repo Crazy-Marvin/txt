@@ -10,8 +10,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
-
-import 'markdown_editable_text.dart';
+import 'package:txt/markdown/markdown_editable_text.dart';
 
 typedef InputCounterWidgetBuilder = Widget Function(
   BuildContext context, {
