@@ -9,6 +9,8 @@
 [![F-Droid](https://img.shields.io/f-droid/v/xxxxxxxx.svg?style=flat)](https://f-droid.org/de/packages/xxxxxxxx/)
 [![Google Play](https://badgen.net/badge/icon/googleplay?icon=googleplay&label)](https://play.google.com/store/apps/details?id=rocks.poopjournal.txt)
 [![AppStore](https://badgen.net/badge/icon/appstore?icon=apple&label)](https://play.google.com/store/apps/details?id=rocks.poopjournal.metadataremover)
+[![Desktop](https://img.shields.io/badge/desktop-Linux%20%7C%20macOS%20%7C%20Windows-green.svg)](https://github.com/Crazy-Marvin/txt/releases)
+
 
 # txt
 
