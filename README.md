@@ -1,4 +1,5 @@
-[![Codemagic build status](https://api.codemagic.io/apps/5d2894bfa39dd73adaeec107/5d2894bfa39dd73adaeec106/status_badge.svg)](https://codemagic.io/apps/5d2894bfa39dd73adaeec107/5d2894bfa39dd73adaeec106/latest_build)[![License](https://img.shields.io/github/license/Crazy-Marvin/txt.svg?style=flat)](LICENSE.txt)
+[![Codemagic build status](https://api.codemagic.io/apps/5d2894bfa39dd73adaeec107/5d2894bfa39dd73adaeec106/status_badge.svg)](https://codemagic.io/apps/5d2894bfa39dd73adaeec107/5d2894bfa39dd73adaeec106/latest_build)
+[![License](https://img.shields.io/github/license/Crazy-Marvin/txt.svg?style=flat)](LICENSE.txt)
 [![Last commit](https://img.shields.io/github/last-commit/Crazy-Marvin/txt.svg?style=flat)](https://github.com/Crazy-Marvin/txt/commits)
 [![Releases](https://img.shields.io/github/downloads/Crazy-Marvin/txt/total.svg?style=flat)](https://github.com/Crazy-Marvin/txt/releases)
 [![Latest tag](https://img.shields.io/github/tag/Crazy-Marvin/txt.svg?style=flat)](https://github.com/Crazy-Marvin/txt/tags)
