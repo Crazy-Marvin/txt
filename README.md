@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/Crazy-Marvin/txt.svg?branch=master)](https://travis-ci.org/Crazy-Marvin/txt)
-[![License](https://img.shields.io/github/license/Crazy-Marvin/txt.svg?style=flat)](LICENSE.txt)
+[![License](https://img.shields.io/github/license/Crazy-Marvin/txt.svg?style=flat)](LICENSE)
 [![Last commit](https://img.shields.io/github/last-commit/Crazy-Marvin/txt.svg?style=flat)](https://github.com/Crazy-Marvin/txt/commits)
 [![Releases](https://img.shields.io/github/downloads/Crazy-Marvin/txt/total.svg?style=flat)](https://github.com/Crazy-Marvin/txt/releases)
 [![Latest tag](https://img.shields.io/github/tag/Crazy-Marvin/txt.svg?style=flat)](https://github.com/Crazy-Marvin/txt/tags)
