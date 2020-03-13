@@ -16,6 +16,8 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: "1.12.x"
+      - name: "👤 Disable tracking"
+        run: flutter config --no-analytics
       - name: "🧰 Install dependencies"
         run: flutter pub get
       - name: "✅ Test"
