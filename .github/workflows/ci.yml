@@ -15,7 +15,7 @@ jobs:
       - name: "🧰 Install Flutter"
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: "1.15.20"
+          flutter-version: "1.12.x"
       - name: "🧰 Install dependencies"
         run: flutter pub get
       - name: "✅ Test"
