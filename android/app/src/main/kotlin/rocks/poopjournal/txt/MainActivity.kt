@@ -1,4 +1,4 @@
-package com.example.txt
+package rocks.poopjournal.txt
 
 import io.flutter.embedding.android.FlutterActivity
 
