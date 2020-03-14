@@ -30,7 +30,7 @@ jobs:
           name: "Android App Bundle"
           path: build/app/outputs/bundle/release/app-release.aab
       - name: "🏗 Build Android APK"
-        run: flutter build appbundle
+        run: flutter build apk
       - name: "📤 Upload Android APK"
         uses: actions/upload-artifact@v1.0.0
         with:
