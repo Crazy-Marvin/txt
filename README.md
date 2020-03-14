@@ -7,6 +7,8 @@
 [![Pull requests](https://img.shields.io/github/issues-pr/Crazy-Marvin/txt.svg?style=flat-square)](https://github.com/Crazy-Marvin/txt/pulls)
 [![Coverage](https://img.shields.io/codecov/c/github/Crazy-Marvin/txt?style=flat-square)](https://codecov.io/gh/Crazy-Marvin/txt)
 
+![App icon](artwork/icon/github.png)
+
 # txt
 
 Simple text editor/notepad with cloud sync.
