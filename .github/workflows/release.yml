@@ -15,7 +15,7 @@ jobs:
       - name: "✏️ Generate changelog"
         id: generate-changelog
         if: runner.os == 'Linux'
-        uses: heinrichreimer/action-github-changelog-generator@ca3cde0
+        uses: heinrichreimer/action-github-changelog-generator@v2.1
         with:
           onlyLastTag: "true"
           stripHeaders: "true"
