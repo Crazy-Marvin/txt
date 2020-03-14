@@ -39,7 +39,6 @@ jobs:
       - name: "📤 Upload test coverage report to Codecov.io"
         uses: codecov/codecov-action@v1.0.2
         if: runner.os == 'Linux'
-        continue-on-error: true
         with:
           token: ${{secrets.CODECOV_TOKEN}}
           file: coverage/lcov.info
