@@ -18,7 +18,7 @@ jobs:
         uses: heinrichreimer/action-github-changelog-generator@04cb791f54e6217baf8cd34d55efc607f258af6d
         with:
           header-label: ""
-          since-tag: "'$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`)'"
+          since-tag: "$(git describe --tags $(git rev-list --tags --skip=1 --max-count=1))"
       - name: "📤 Upload changelog"
         uses: actions/upload-artifact@v1.0.0
         with:
