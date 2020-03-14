@@ -3,16 +3,12 @@ name: CI
 on: push
 
 jobs:
-  checkout:
-    name: "📥 Check-out"
+  build:
+    name: "🏗 Build"
     runs-on: macos-10.15
     steps:
       - name: "📥 Check-out"
         uses: actions/checkout@v1
-  install:
-    name: "🧰 Installation"
-    runs-on: macos-10.15
-    steps:
       - name: "🧰 Install Java"
         uses: actions/setup-java@v1
         with:
@@ -21,13 +17,6 @@ jobs:
         uses: subosito/flutter-action@v1
         with:
           flutter-version: "1.12.x"
-  build:
-    name: "🏗 Build"
-    runs-on: macos-10.15
-    needs:
-      - checkout
-      - install
-    steps:
       - name: "👤 Disable tracking"
         run: flutter config --no-analytics
       - name: "🧰 Install dependencies"
@@ -38,22 +27,10 @@ jobs:
         run: flutter build appbundle
       - name: "🏗 Build Android APK"
         run: flutter build apk
-  verify:
-    name: "✅ Verification"
-    runs-on: macos-10.15
-    needs:
-      - build
-    steps:
       - name: "✅ Analyze"
         run: flutter analyze
       - name: "✅ Test"
         run: flutter test --coverage
-  upload:
-    name: "📤 Upload"
-    runs-on: macos-10.15
-    needs:
-      - verify
-    steps:
       - name: "📤 Upload test coverage report"
         uses: codecov/codecov-action@v1.0.2
         with:
