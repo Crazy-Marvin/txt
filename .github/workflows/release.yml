@@ -17,7 +17,7 @@ jobs:
         if: runner.os == 'Linux'
         uses: heinrichreimer/action-github-changelog-generator@a1e31854
         with:
-          sinceTag: "$(git describe --tags $(git rev-list --tags --skip=1 --max-count=1))"
+          sinceTag: "'$(git describe --tags $(git rev-list --tags --skip=1 --max-count=1))'"
       - name: "📤 Upload changelog"
         uses: actions/upload-artifact@v1.0.0
         with:
@@ -25,7 +25,7 @@ jobs:
           path: CHANGELOG.md
       - name: "🚀 Create GitHub release"
         id: create-github-release
-        uses: actions/create-release@latest
+        uses: actions/create-release@v1.0.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
@@ -35,8 +35,8 @@ jobs:
           draft: true
           prerelease: false
       - name: "🔔 Notify Slack"
+        uses: pullreminders/slack-action@v1.0.7
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-        uses: pullreminders/slack-action@v1.0.7
         with:
           args: "{\"channel\":\"CLWH056RL\",\"blocks\":{\"type\":\"home\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\":rocket: New <https://github.com/${{ github.repository }}|*${{ github.repository }}*> release on GitHub:\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Release v1.2.0*\"}},{\"type\":\"context\",\"elements\":[{\"type\":\"mrkdwn\",\"text\":\"*Tag:* <https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}|`${{ github.ref }}`>\"},{\"type\":\"mrkdwn\",\"text\":\"*Commit:* <https://github.com/${{ github.repository }}/commits/${{ github.sha }}|`${{ github.sha }}`>\"},{\"type\":\"mrkdwn\",\"text\":\"*User:* <https://github.com/${{ github.actor }}|@${{ github.actor }}>\"}]},{\"type\":\"actions\",\"elements\":[{\"type\":\"button\",\"text\":{\"type\":\"plain_text\",\"text\":\"View Release\"},\"style\":\"primary\",\"url\":\"https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}\"},{\"type\":\"button\",\"text\":{\"type\":\"plain_text\",\"text\":\"Compare\"},\"url\":\"https://github.com/${{ github.repository }}/compare/${{ github.ref }}...HEAD\"}]}]}}"
