@@ -18,6 +18,8 @@ jobs:
         uses: heinrichreimer/action-github-changelog-generator@ca3cde0
         with:
           onlyLastTag: "true"
+          stripHeaders: "true"
+          stripGeneratorNotice: "true"
       - name: "📤 Upload changelog"
         uses: actions/upload-artifact@v1.0.0
         with:
