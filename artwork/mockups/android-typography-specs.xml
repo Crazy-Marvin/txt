@@ -1,0 +1,121 @@
+<!-- Headline 6 -->
+    <style name="Draft.TextBase.Headline6" parent="TextAppearance.MaterialComponents.Headline6">
+        <item name="fontFamily">@font/poppins_semibold</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:letterSpacing">0.0075</item>
+    </style>
+
+    <style name="DraftTheme.Headline6">
+        <item name="android:textAppearance">@style/Draft.TextBase.Headline6</item>
+        <item name="lineHeight">32sp</item>
+        <item name="firstBaselineToTopHeight">24sp</item>
+        <item name="lastBaselineToBottomHeight">8sp</item>
+    </style>
+    <!-- Headline 6 -->
+
+
+<!-- Subtitle 1 -->
+    <style name="Draft.TextBase.Subtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="fontFamily">@font/work_sans_medium</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="DraftTheme.Subtitle1">
+        <item name="android:textAppearance">@style/Draft.TextBase.Subtitle1</item>
+        <item name="lineHeight">24sp</item>
+        <item name="firstBaselineToTopHeight">20sp</item>
+        <item name="lastBaselineToBottomHeight">8sp</item>
+    </style>
+    <!-- Subtitle 1 -->
+
+<!-- Subtitle 2 -->
+    <style name="Draft.TextBase.Subtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="fontFamily">@font/work_sans_medium</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0.00715</item>
+    </style>
+
+    <style name="DraftTheme.Subtitle2">
+        <item name="android:textAppearance">@style/Draft.TextBase.Subtitle2</item>
+        <item name="lineHeight">24sp</item>
+        <item name="firstBaselineToTopHeight">16sp</item>
+        <item name="lastBaselineToBottomHeight">4sp</item>
+    </style>
+    <!-- Subtitle 2 -->
+
+<!-- Body 1 -->
+    <style name="Draft.TextBase.Body1" parent="TextAppearance.MaterialComponents.Body1">
+        <item name="fontFamily">@font/work_sans_regular</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="DraftTheme.Body1">
+        <item name="android:textAppearance">@style/Draft.TextBase.Body1</item>
+        <item name="lineHeight">28sp</item>
+        <item name="firstBaselineToTopHeight">20sp</item>
+        <item name="lastBaselineToBottomHeight">8sp</item>
+    </style>
+    <!-- Body 1 -->
+
+<!-- Body 2 -->
+    <style name="Draft.TextBase.Body2" parent="TextAppearance.MaterialComponents.Body2">
+        <item name="fontFamily">@font/work_sans_regular</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="DraftTheme.Body2">
+        <item name="android:textAppearance">@style/Draft.TextBase.Body2</item>
+        <item name="lineHeight">24sp</item>
+        <item name="firstBaselineToTopHeight">16sp</item>
+        <item name="lastBaselineToBottomHeight">4sp</item>
+    </style>
+    <!-- Body 2 -->
+
+<!-- Button -->
+    <style name="Draft.TextBase.Button" parent="TextAppearance.MaterialComponents.Button">
+        <item name="fontFamily">@font/poppins_bold</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="DraftTheme.Button">
+        <item name="android:textAppearance">@style/Draft.TextBase.Button</item>
+        <item name="lineHeight">24sp</item>
+        <item name="firstBaselineToTopHeight">16sp</item>
+        <item name="lastBaselineToBottomHeight">4sp</item>
+    </style>
+    <!-- Button -->
+
+<!-- Caption -->
+    <style name="Draft.TextBase.Caption" parent="TextAppearance.MaterialComponents.Caption">
+        <item name="fontFamily">@font/work_sans_regular</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:letterSpacing">0.0415</item>
+    </style>
+
+    <style name="DraftTheme.Caption">
+        <item name="android:textAppearance">@style/Draft.TextBase.Caption</item>
+        <item name="lineHeight">16sp</item>
+        <item name="firstBaselineToTopHeight">12sp</item>
+        <item name="lastBaselineToBottomHeight">4sp</item>
+    </style>
+    <!-- Caption -->
+
+<!-- Overline -->
+    <style name="Draft.TextBase.Overline" parent="TextAppearance.MaterialComponents.Overline">
+        <item name="fontFamily">@font/work_sans_bold</item>
+        <item name="android:textSize">10sp</item>
+        <item name="android:letterSpacing">0.1</item>
+    </style>
+
+    <style name="DraftTheme.Overline">
+        <item name="android:textAppearance">@style/Draft.TextBase.Overline</item>
+        <item name="lineHeight">16sp</item>
+        <item name="firstBaselineToTopHeight">12sp</item>
+        <item name="lastBaselineToBottomHeight">4sp</item>
+    </style>
+    <!-- Caption -->
+
