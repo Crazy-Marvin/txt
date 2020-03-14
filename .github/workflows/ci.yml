@@ -33,7 +33,7 @@ jobs:
         run: flutter test --coverage
       - name: "📤 Upload test coverage report"
         uses: codecov/codecov-action@v1.0.2
-        if: runner.os == Linux
+        if: runner.os == "Linux"
         continue-on-error: true
         with:
           token: ${{secrets.CODECOV_TOKEN}}
