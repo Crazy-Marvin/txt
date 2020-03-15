@@ -64,11 +64,15 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Commit:* <https://github.com/${{ github.repository }}/commits/${{ github.sha }}|`${{ github.sha }}`>"
+                    "text": "*Commit:* <https://github.com/${{ github.repository }}/commit/${{ github.sha }}|`${{ github.sha }}`>"
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*User:* <https://github.com/${{ github.actor }}|@${{ github.actor }}>"
+                    "text": "*ID:* <https://github.com/${{ github.repository }}/releases/tag/${{ steps.get-version.outputs.tag }}|`${{ steps.create-github-release.outputs.id }}`>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Author:* <https://github.com/${{ github.actor }}|@${{ github.actor }}>"
                   }
                 ]
               },
