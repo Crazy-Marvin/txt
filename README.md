@@ -12,3 +12,13 @@
 # txt
 
 Simple text editor/notepad with cloud sync.
+
+## Build
+
+1. Install dependencies: `flutter pub get`
+2. Build: `flutter build apk`, `flutter build ios` etc.
+
+## Legal
+See our [terms of service](legal/terms-of-service.pdf) 
+and [privacy policy](legal/privacy-policy.pdf).
+If anything is unclear, please [reach out to us](mailto:marvin@poopjournal.rocks).
