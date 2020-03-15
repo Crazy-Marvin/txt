@@ -32,10 +32,14 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        title: 'txt',
-        home: MainRoute(),
-        theme: buildAppTheme(context, AppTheme.Light)
+    var theme = AppTheme.Purple;
+    return AnnotatedRegion(
+      value: buildAppSystemUiOverlayStyle(theme),
+      child: MaterialApp(
+          title: 'txt',
+          home: MainRoute(),
+          theme: buildAppTheme(context, theme)
+      ),
     );
   }
 }
