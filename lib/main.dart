@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:txt/route/main.dart';
 import 'package:txt/themes.dart';
 
@@ -8,7 +9,12 @@ import 'markdown/text_editing_controller.dart';
 import 'markdown_sample.dart';
 
 void main() {
-  runApp(App());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ThemesNotifier(),
+      child: App(),
+    ),
+  );
 }
 
 class App extends StatefulWidget {
@@ -32,13 +38,16 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    var theme = AppTheme.Purple;
     return AnnotatedRegion(
-      value: buildAppSystemUiOverlayStyle(theme),
+      value: Provider
+          .of<ThemesNotifier>(context)
+          .systemUiOverlayStyle,
       child: MaterialApp(
-          title: 'txt',
-          home: MainRoute(),
-          theme: buildAppTheme(context, theme)
+        title: 'txt',
+        home: MainRoute(),
+        theme: Provider
+            .of<ThemesNotifier>(context)
+            .themeData,
       ),
     );
   }

@@ -4,11 +4,11 @@ import 'package:flutter/material.dart';
 
 /// A rectangle with a smooth circular notch.
 /// Borrowed from https://github.com/JarrodCColburn/flutter/commit/17a0fe61269823c7f9e462596b5aedf794d243bc (BSD-style license).
-class RoundedBorderNotchedRectangle implements NotchedShape {
+class StadiumBorderNotchedRectangle implements NotchedShape {
   /// Creates a `CircularNotchedRectangle`.
   ///
   /// The same object can be used to create multiple shapes.
-  const RoundedBorderNotchedRectangle();
+  const StadiumBorderNotchedRectangle();
 
   /// Creates a [Path] that describes a rectangle with a smooth circular notch.
   ///
