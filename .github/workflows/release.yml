@@ -37,8 +37,60 @@ jobs:
           draft: true
           prerelease: false
       - name: "🔔 Notify Slack"
-        uses: pullreminders/slack-action@v1.0.7
+        uses: GoldenspearLLC/slack-chat-postmessage@v3
         env:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
-          args: "{\"channel\":\"CLWH056RL\",\"blocks\":{\"type\":\"home\",\"blocks\":[{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\":rocket: New <https://github.com/${{ github.repository }}|*${{ github.repository }}*> release on GitHub:\"}},{\"type\":\"section\",\"text\":{\"type\":\"mrkdwn\",\"text\":\"*Release v1.2.0*\"}},{\"type\":\"context\",\"elements\":[{\"type\":\"mrkdwn\",\"text\":\"*Tag:* <https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}|`${{ github.ref }}`>\"},{\"type\":\"mrkdwn\",\"text\":\"*Commit:* <https://github.com/${{ github.repository }}/commits/${{ github.sha }}|`${{ github.sha }}`>\"},{\"type\":\"mrkdwn\",\"text\":\"*User:* <https://github.com/${{ github.actor }}|@${{ github.actor }}>\"}]},{\"type\":\"actions\",\"elements\":[{\"type\":\"button\",\"text\":{\"type\":\"plain_text\",\"text\":\"View Release\"},\"style\":\"primary\",\"url\":\"https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}\"},{\"type\":\"button\",\"text\":{\"type\":\"plain_text\",\"text\":\"Compare\"},\"url\":\"https://github.com/${{ github.repository }}/compare/${{ github.ref }}...HEAD\"}]}]}}"
+          channel: "#txt"
+          text: "New <https://github.com/${{ github.repository }}|*${{ github.repository }}*> release on GitHub:\n*${{ steps.create-github-release.inputs.release_name }}*"
+          blocks: |
+            [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "New <https://github.com/${{ github.repository }}|*${{ github.repository }}*> release on GitHub:\n*${{ steps.create-github-release.inputs.release_name }}*"
+                }
+              },
+              {
+                "type": "context",
+                "elements": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Tag:* <https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}|`${{ github.ref }}`>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Commit:* <https://github.com/${{ github.repository }}/commits/${{ github.sha }}|`${{ github.sha }}`>"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*User:* <https://github.com/${{ github.actor }}|@${{ github.actor }}>"
+                  }
+                ]
+              },
+              {
+                "type": "actions",
+                "elements": [
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "View Release"
+                    },
+                    "style": "primary",
+                    "url": "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}"
+                  },
+                  {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Compare"
+                    },
+                    "url": "https://github.com/${{ github.repository }}/compare/${{ github.ref }}...HEAD"
+                  }
+                ]
+              }
+            ]
+          icon_emoji: rocket
+          mrkdwn: "true"
