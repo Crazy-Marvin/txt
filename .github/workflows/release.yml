@@ -12,6 +12,9 @@ jobs:
     steps:
       - name: "📥 Check-out"
         uses: actions/checkout@v1
+      - name: "🏷️ Get version tag"
+        id: get-version
+        run: echo ::set-output name=tag::${GITHUB_REF/refs\/tags\//}
       - name: "✏️ Generate changelog"
         id: generate-changelog
         if: runner.os == 'Linux'
@@ -32,7 +35,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
+          release_name: Release ${{ steps.get-version.outputs.tag }}
           body: ${{ steps.generate-changelog.outputs.changelog }}
           draft: true
           prerelease: false
@@ -42,14 +45,14 @@ jobs:
           SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         with:
           channel: "#txt"
-          text: "New <https://github.com/${{ github.repository }}|*${{ github.repository }}*> release on GitHub:\n*${{ steps.create-github-release.inputs.release_name }}*"
+          text: "New <https://github.com/${{ github.repository }}|*${{ github.repository }}*> release on GitHub:\n*Release ${{ steps.get-version.outputs.tag }}*"
           blocks: |
             [
               {
                 "type": "section",
                 "text": {
                   "type": "mrkdwn",
-                  "text": "New <https://github.com/${{ github.repository }}|*${{ github.repository }}*> release on GitHub:\n*${{ steps.create-github-release.inputs.release_name }}*"
+                  "text": "New <https://github.com/${{ github.repository }}|*${{ github.repository }}*> release on GitHub:\n*Release ${{ steps.get-version.outputs.tag }}*"
                 }
               },
               {
@@ -57,7 +60,7 @@ jobs:
                 "elements": [
                   {
                     "type": "mrkdwn",
-                    "text": "*Tag:* <https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}|`${{ github.ref }}`>"
+                    "text": "*Tag:* <https://github.com/${{ github.repository }}/releases/tag/${{ steps.get-version.outputs.tag }}|`${{ steps.get-version.outputs.tag }}`>"
                   },
                   {
                     "type": "mrkdwn",
@@ -79,7 +82,7 @@ jobs:
                       "text": "View Release"
                     },
                     "style": "primary",
-                    "url": "https://github.com/${{ github.repository }}/releases/tag/${{ github.ref }}"
+                    "url": "https://github.com/${{ github.repository }}/releases/tag/${{ steps.get-version.outputs.tag }}"
                   },
                   {
                     "type": "button",
