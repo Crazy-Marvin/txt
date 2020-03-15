@@ -7,7 +7,6 @@ import 'package:txt/widget/notched_shapes.dart';
 enum AppTheme { Light, Dark, Purple }
 
 class ThemesNotifier with ChangeNotifier {
-
   static const _defaultTheme = AppTheme.Light;
 
   AppTheme _theme;
@@ -58,18 +57,6 @@ class ThemesNotifier with ChangeNotifier {
       case AppTheme.Purple:
         baseTheme = ThemeData(
           brightness: Brightness.dark,
-          colorScheme: ColorScheme.dark(
-            primary: Colors.purple,
-            primaryVariant: Colors.purple.shade800,
-            secondary: Colors.purpleAccent.shade700,
-            secondaryVariant: Colors.purpleAccent.shade700,
-            surface: Colors.purple.shade900,
-            background: Colors.purple.shade900,
-            onPrimary: Colors.white,
-            onSecondary: Colors.white,
-            onSurface: Colors.white,
-            onBackground: Colors.white,
-          ),
           bottomAppBarColor: Colors.purple.shade600,
           scaffoldBackgroundColor: Colors.purple.shade900,
           accentColor: Colors.purple,
@@ -77,27 +64,36 @@ class ThemesNotifier with ChangeNotifier {
         break;
     }
     return baseTheme.copyWith(
-      textTheme: _buildTextTheme(baseTheme.textTheme),
-      floatingActionButtonTheme: baseTheme.floatingActionButtonTheme.copyWith(
-          backgroundColor: baseTheme.accentColor
-      ),
-      bottomAppBarTheme: baseTheme.bottomAppBarTheme.copyWith(
-        shape: StadiumBorderNotchedRectangle(),
-      ),
-    );
-  }
-
-  TextTheme _buildTextTheme(TextTheme base) {
-    return GoogleFonts.workSansTextTheme(base).copyWith(
-      headline: GoogleFonts.pacifico(
-        textStyle: base.headline,
-        fontWeight: FontWeight.w800,
-      ),
-      button: GoogleFonts.poppins(
-        textStyle: base.button,
-        fontWeight: FontWeight.bold,
-      ),
-    );
+        textTheme: GoogleFonts.workSansTextTheme(
+          baseTheme.textTheme,
+        ).copyWith(
+          title: GoogleFonts.poppins(
+            textStyle: baseTheme.textTheme.title,
+            fontWeight: FontWeight.w800,
+          ),
+          button: GoogleFonts.poppins(
+            textStyle: baseTheme.textTheme.button,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        accentTextTheme: GoogleFonts.workSansTextTheme(
+          baseTheme.accentTextTheme,
+        ).copyWith(
+          button: GoogleFonts.poppins(
+            textStyle: baseTheme.accentTextTheme.button,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        bottomAppBarTheme: baseTheme.bottomAppBarTheme.copyWith(
+          shape: StadiumBorderNotchedRectangle(),
+        ),
+        bottomSheetTheme: baseTheme.bottomSheetTheme.copyWith(
+          shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(
+              top: Radius.circular(16),
+            ),
+          ),
+        ));
   }
 
   SystemUiOverlayStyle _buildAppSystemUiOverlayStyle() {

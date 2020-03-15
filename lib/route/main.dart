@@ -5,12 +5,24 @@ import 'package:provider/provider.dart';
 import '../themes.dart';
 
 class MainRoute extends StatelessWidget {
-  void openMenu() {
+
+  void showMenu(BuildContext context) {
     // TODO
   }
 
-  void openSort() {
-    // TODO
+  void showSort(BuildContext context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (builder) {
+          return Container(
+            height: 300.0,
+            child: Center(
+              child: Text(
+                  "This is a modal sheet\n\n\n\n\n\n\nThis is a modal sheet"),
+            ),
+          );
+        }
+    );
   }
 
   @override
@@ -34,11 +46,11 @@ class MainRoute extends StatelessWidget {
           children: <Widget>[
             IconButton(
               icon: Icon(Icons.menu),
-              onPressed: openMenu,
+              onPressed: () => showMenu(context),
             ),
             IconButton(
               icon: Icon(Icons.sort),
-              onPressed: openSort,
+              onPressed: () => showSort(context),
             ),
           ],
         ),
