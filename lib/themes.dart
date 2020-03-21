@@ -238,7 +238,7 @@ extension ThemeDataExtension on ThemeData {
     bool hasTopAppBar = true,
     bool hasBottomAppBar = false,
     SystemUiOverlayTheme statusBarTheme = SystemUiOverlayTheme.Darken,
-    SystemUiOverlayTheme navigationBarTheme = SystemUiOverlayTheme.Same,
+    SystemUiOverlayTheme navigationBarTheme = SystemUiOverlayTheme.Darken,
   }) {
     Brightness iconBrightness =
     brightness == Brightness.light ? Brightness.dark : Brightness.light;
