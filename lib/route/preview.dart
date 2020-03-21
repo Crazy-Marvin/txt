@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:txt/widget/system_ui.dart';
 
-class PreviewScreen extends StatefulWidget {
+class PreviewScreen extends StatelessWidget {
   static const routeName = '/preview';
 
   @override
-  _PreviewScreenState createState() => _PreviewScreenState();
-}
-
-class _PreviewScreenState extends SystemUiState<PreviewScreen>
-    with SystemUiRouteObserver {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Preview'),
+    return SystemUiOverlayRegion(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Preview'.toUpperCase()),
+        ),
+        body: Text('Nothing here'),
       ),
-      body: Text('Nothing here'),
     );
   }
 }

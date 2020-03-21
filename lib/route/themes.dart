@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:txt/widget/system_ui.dart';
 
-class ThemesScreen extends StatefulWidget {
+class ThemesScreen extends StatelessWidget {
   static const routeName = '/settings/themes';
 
   @override
-  _ThemesScreenState createState() => _ThemesScreenState();
-}
-
-class _ThemesScreenState extends SystemUiState<ThemesScreen>
-    with SystemUiRouteObserver {
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Themes'),
+    return SystemUiOverlayRegion(
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Themes'.toUpperCase()),
+        ),
+        body: Text('Nothing here'),
       ),
-      body: Text('Nothing here'),
     );
   }
 }

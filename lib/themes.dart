@@ -18,46 +18,58 @@ BrightnessBased<ThemeData> _buildThemeData(AppTheme theme) {
   switch (theme) {
     case AppTheme.Light:
       colorScheme = ColorScheme.light(
-        primary: Colors.grey.shade100,
-        primaryVariant: Colors.grey.shade200,
-        secondary: Colors.purpleAccent,
-        secondaryVariant: Colors.purpleAccent.shade700,
+        primary: Colors.white,
+        primaryVariant: Colors.grey.shade100,
+        secondary: Colors.purple.shade400,
+        secondaryVariant: Colors.purpleAccent.shade400,
+        surface: Colors.white,
+        background: Colors.white,
         onPrimary: Colors.black,
+        onSecondary: Colors.white,
+        onSurface: Colors.black,
+        onBackground: Colors.black,
       );
       break;
     case AppTheme.Dark:
       colorScheme = ColorScheme.dark(
-        primary: Colors.purple,
-        primaryVariant: Colors.purple.shade600,
-        secondary: Colors.purpleAccent,
+        primary: Colors.grey.shade800,
+        primaryVariant: Colors.grey.shade800,
+        secondary: Colors.purple.shade400,
         secondaryVariant: Colors.purpleAccent.shade700,
+        surface: Colors.grey.shade800,
+        background: Colors.grey.shade900,
         onPrimary: Colors.white,
         onSecondary: Colors.white,
+        onSurface: Colors.white,
+        onBackground: Colors.white,
       );
       break;
     case AppTheme.Purple:
       colorScheme = ColorScheme.dark(
-        primary: Colors.purple.shade700,
-        primaryVariant: Colors.purple.shade800,
-        secondary: Colors.purpleAccent,
-        secondaryVariant: Colors.purpleAccent.shade700,
-        surface: Colors.purple.shade500,
-        background: Colors.purple.shade800,
+        primary: Color(0xFF6D0081),
+        primaryVariant: Color(0xFF6D0081),
+        secondary: Color(0xFF6D0081),
+        secondaryVariant: Color(0xFFAC11B7),
+        surface: Color(0xFF6D0081),
+        background: Color(0xFF35023E),
         onPrimary: Colors.white,
         onSecondary: Colors.white,
+        onSurface: Colors.white,
+        onBackground: Colors.white,
       );
       break;
     case AppTheme.Auto:
       throw StateError("Auto theme is delegate to light and dark theme.");
   }
   var baseTheme = ThemeData.from(colorScheme: colorScheme).copyWith(
-      buttonTheme: ButtonThemeData(
-        colorScheme: colorScheme.copyWith(
-          primary: Colors.purpleAccent,
-          primaryVariant: Colors.purpleAccent.shade700,
-        ),
-        textTheme: ButtonTextTheme.primary,
-      ));
+    buttonTheme: ButtonThemeData(
+      colorScheme: colorScheme.copyWith(
+        primary: colorScheme.secondary,
+        primaryVariant: colorScheme.secondaryVariant,
+      ),
+      textTheme: ButtonTextTheme.primary,
+    ),
+  );
   return baseTheme
       .copyWith(
       textTheme: baseTheme.textTheme.withAppFonts(),
@@ -65,6 +77,7 @@ BrightnessBased<ThemeData> _buildThemeData(AppTheme theme) {
       accentTextTheme: baseTheme.accentTextTheme.withAppFonts(),
       bottomAppBarTheme: baseTheme.bottomAppBarTheme.copyWith(
         shape: StadiumBorderNotchedRectangle(),
+        color: colorScheme.primary,
       ),
       bottomSheetTheme: baseTheme.bottomSheetTheme.copyWith(
         shape: const RoundedRectangleBorder(
@@ -72,6 +85,7 @@ BrightnessBased<ThemeData> _buildThemeData(AppTheme theme) {
             top: Radius.circular(16),
           ),
         ),
+        backgroundColor: colorScheme.surface,
       ),
       buttonTheme: baseTheme.buttonTheme.copyWith())
       .asBrightnessBased();
@@ -188,7 +202,7 @@ extension ColorExtension on Color {
   Color darken(double amount) {
     assert(amount >= -1 && amount <= 1);
     final hsl = HSLColor.fromColor(this);
-    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0.0, 1.0));
+    final hslDark = hsl.withLightness((hsl.lightness - amount).clamp(0, 1));
     return hslDark.toColor();
   }
 
@@ -203,11 +217,11 @@ extension ColorExtension on Color {
       case SystemUiOverlayTheme.Lighten:
         if (this == Colors.black) return Colors.grey.shade900;
         if (this == Colors.transparent) return Colors.white12;
-        return material?.lighterShade(this) ?? lighten(0.1);
+        return material?.lighterShade(this) ?? lighten(0.03);
       case SystemUiOverlayTheme.Darken:
         if (this == Colors.white) return Colors.grey.shade100;
         if (this == Colors.transparent) return Colors.black12;
-        return material?.darkerShade(this) ?? darken(0.1);
+        return material?.darkerShade(this) ?? darken(0.03);
       default:
         throw StateError("Unknown system UI overlay theme");
     }
@@ -247,8 +261,8 @@ extension ThemeDataExtension on ThemeData {
       statusBarColor: statusBarBaseColor.systemUiColor(statusBarTheme),
       statusBarIconBrightness: iconBrightness,
       statusBarBrightness: brightness,
-      systemNavigationBarColor: navigationBarBaseColor.systemUiColor(
-          navigationBarTheme),
+      systemNavigationBarColor:
+      navigationBarBaseColor.systemUiColor(navigationBarTheme),
       systemNavigationBarIconBrightness: iconBrightness,
     );
     return style;

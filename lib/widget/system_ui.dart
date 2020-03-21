@@ -1,69 +1,26 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 import 'package:txt/themes.dart';
 
-mixin SystemUiRouteObserver<T extends StatefulWidget> on SystemUiState<T>
-    implements RouteAware {
-  RouteObserver<ModalRoute> _routeObserver;
-  ThemesNotifier _themesNotifier;
+class SystemUiOverlayRegion extends StatelessWidget {
+  final Widget child;
+  final SystemUiOverlayStyle Function(BuildContext context) builder;
+
+  SystemUiOverlayRegion({
+    Key key,
+    @required this.child,
+    this.builder,
+  }) : super(key: key);
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    if (_routeObserver == null) {
-      _routeObserver = Provider.of(context, listen: false)
-        ..subscribe(this, ModalRoute.of(context));
-    }
-    if (_themesNotifier == null) {
-      _themesNotifier = Provider.of(context, listen: false)
-        ..addListener(_onThemeChanged);
-    }
-
-    Provider.of<ThemesNotifier>(context);
+  Widget build(BuildContext context) {
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: builder != null ? builder(context) : Theme.of(context)
+          .systemUiOverlayStyle()
+//          .copyWith(systemNavigationBarColor: Colors.yellow, systemNavigationBarDividerColor: Colors.pink, statusBarColor: Colors.green)
+      ,
+      child: child,
+      sized: true,
+    );
   }
-
-  @override
-  void dispose() {
-    _routeObserver.unsubscribe(this);
-    _themesNotifier.removeListener(_onThemeChanged);
-    super.dispose();
-  }
-
-  void _onThemeChanged() {
-    Timer(Duration(milliseconds: 300), updateSystemUiOverlayStyle);
-  }
-
-  void _onFocus() {
-    Timer(Duration(milliseconds: 100), updateSystemUiOverlayStyle);
-  }
-
-  void updateSystemUiOverlayStyle() {
-    SystemChrome.setSystemUIOverlayStyle(systemUIOverlayStyle);
-  }
-
-  @override
-  void didPopNext() {
-    debugPrint("didPopNext($runtimeType)");
-    _onFocus();
-  }
-
-  @override
-  void didPush() {
-    debugPrint("didPush($runtimeType)");
-    _onFocus();
-  }
-
-  @override
-  void didPop() {}
-
-  @override
-  void didPushNext() {}
-}
-
-abstract class SystemUiState<T extends StatefulWidget> extends State<T> {
-  SystemUiOverlayStyle get systemUIOverlayStyle =>
-      Theme.of(context).systemUiOverlayStyle();
 }
