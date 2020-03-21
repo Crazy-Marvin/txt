@@ -24,3 +24,8 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/icon-squircle.png
+    - assets/avatars/janheinrichreimer.png
+    - assets/avatars/kevinaguilar.png
+    - assets/avatars/marvinmeissner.png
