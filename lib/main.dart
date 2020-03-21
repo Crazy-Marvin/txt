@@ -1,8 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:txt/route/about.dart';
+import 'package:txt/route/editor.dart';
 import 'package:txt/route/main.dart';
+import 'package:txt/route/preview.dart';
+import 'package:txt/route/settings.dart';
+import 'package:txt/route/themes.dart';
 import 'package:txt/themes.dart';
 
 import 'markdown/text_editing_controller.dart';
@@ -10,8 +16,11 @@ import 'markdown_sample.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => ThemesNotifier(),
+    MultiProvider(
+      providers: [
+        Provider(create: (_) => RouteObserver<ModalRoute>()),
+        ChangeNotifierProvider(create: (_) => ThemesNotifier(),),
+      ],
       child: App(),
     ),
   );
@@ -38,17 +47,32 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion(
-      value: Provider
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    return MaterialApp(
+      title: 'txt',
+      theme: Provider
           .of<ThemesNotifier>(context)
-          .systemUiOverlayStyle,
-      child: MaterialApp(
-        title: 'txt',
-        home: MainRoute(),
-        theme: Provider
-            .of<ThemesNotifier>(context)
-            .themeData,
-      ),
+          .themeData
+          .light,
+      darkTheme: Provider
+          .of<ThemesNotifier>(context)
+          .themeData
+          .dark,
+      initialRoute: MainScreen.routeName,
+      routes: {
+        MainScreen.routeName: (context) => MainScreen(),
+        AboutScreen.routeName: (context) => AboutScreen(),
+        EditorScreen.routeName: (context) => EditorScreen(),
+        PreviewScreen.routeName: (context) => PreviewScreen(),
+        SettingsScreen.routeName: (context) => SettingsScreen(),
+        ThemesScreen.routeName: (context) => ThemesScreen(),
+      },
+      navigatorObservers: [
+        Provider.of<RouteObserver<ModalRoute>>(context, listen: false)
+      ],
     );
   }
 }

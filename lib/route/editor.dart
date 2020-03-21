@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:txt/widget/system_ui.dart';
 
-class EditorRoute extends StatelessWidget {
+class EditorScreen extends StatefulWidget {
+  static const routeName = '/edit';
+
+  @override
+  _EditorScreenState createState() => _EditorScreenState();
+}
+
+class _EditorScreenState extends SystemUiState<EditorScreen>
+    with SystemUiRouteObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

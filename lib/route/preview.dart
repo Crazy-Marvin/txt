@@ -1,6 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:txt/widget/system_ui.dart';
 
-class PreviewRoute extends StatelessWidget {
+class PreviewScreen extends StatefulWidget {
+  static const routeName = '/preview';
+
+  @override
+  _PreviewScreenState createState() => _PreviewScreenState();
+}
+
+class _PreviewScreenState extends SystemUiState<PreviewScreen>
+    with SystemUiRouteObserver {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -1,130 +1,162 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:txt/route/settings.dart';
+import 'package:txt/widget/system_ui.dart';
 
 import '../themes.dart';
 
-class MainRoute extends StatelessWidget {
+class MainScreen extends StatefulWidget {
+  static const routeName = '/';
 
-  void showMenu(BuildContext context) {
-    // TODO
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends SystemUiState<MainScreen>
+    with SystemUiRouteObserver {
+  void _showMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (builder) => MainMenu(),
+    );
   }
 
-  void showSort(BuildContext context) {
+  void _showSort(BuildContext context) {
     showModalBottomSheet(
-        context: context,
-        builder: (builder) {
-          return Container(
-            height: 300.0,
-            child: Center(
-              child: Text(
-                  "This is a modal sheet\n\n\n\n\n\n\nThis is a modal sheet"),
-            ),
-          );
-        }
+      context: context,
+      builder: (builder) => MainSortList(),
+    );
+  }
+
+  @override
+  SystemUiOverlayStyle get systemUIOverlayStyle {
+    return Theme.of(context).systemUiOverlayStyle(
+      hasTopAppBar: false,
+      hasBottomAppBar: true,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'DRAFT',
-          style: Theme
-              .of(context)
-              .textTheme
-              .title,
+    return Theme(
+      data: Theme.of(context).withTranslucentAppBar(),
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            'txt',
+          ),
+          leading: Icon(MdiIcons.checkboxBlankOutline),
         ),
-        leading: Icon(Icons.check_box_outline_blank),
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-      ),
-      bottomNavigationBar: BottomAppBar(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            IconButton(
-              icon: Icon(Icons.menu),
-              onPressed: () => showMenu(context),
-            ),
-            IconButton(
-              icon: Icon(Icons.sort),
-              onPressed: () => showSort(context),
-            ),
-          ],
+        bottomNavigationBar: BottomAppBar(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              IconButton(
+                icon: Icon(Icons.menu),
+                onPressed: () => _showMenu(context),
+              ),
+              IconButton(
+                icon: Icon(MdiIcons.sortVariant),
+                onPressed: () => _showSort(context),
+              ),
+            ],
+          ),
+        ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: FloatingActionButton.extended(
+          onPressed: () {
+            // TODO
+          },
+          label: Text('New draft'.toUpperCase()),
+          icon: Icon(MdiIcons.plus),
+        ),
+        body: Padding(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: <Widget>[
+              RaisedButton(
+                child: Text("Fix navbar color"),
+                onPressed: () {
+                  SystemChrome.setSystemUIOverlayStyle(
+                    Theme.of(context).systemUiOverlayStyle(
+                        hasTopAppBar: false, hasBottomAppBar: true),
+                  );
+                },
+              ),
+              RaisedButton(
+                child: Text("Settings"),
+                onPressed: () {
+                  Navigator.pushNamed(context, SettingsScreen.routeName);
+                },
+              ),
+            ],
+          ),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () {
-          // TODO
-        },
-        label: Text('New draft'.toUpperCase()),
-        icon: Icon(Icons.add),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: <Widget>[
-            Row(
-              children: <Widget>[
-                RaisedButton(
-                  child: Text("Light"),
-                  onPressed: () {
-                    Provider
-                        .of<ThemesNotifier>(context, listen: false)
-                        .theme = AppTheme.Light;
-                  },
-                ),
-                RaisedButton(
-                  child: Text("Dark"),
-                  onPressed: () {
-                    Provider
-                        .of<ThemesNotifier>(context, listen: false)
-                        .theme = AppTheme.Dark;
-                  },
-                ),
-                RaisedButton(
-                  child: Text("Purple"),
-                  onPressed: () {
-                    Provider
-                        .of<ThemesNotifier>(context, listen: false)
-                        .theme = AppTheme.Purple;
-                  },
-                ),
-              ],
+    );
+  }
+}
+
+class MainSortList extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Text("Placeholder");
+  }
+}
+
+class MainMenu extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FractionallySizedBox(
+      heightFactor: 0.65,
+      child: ListView(
+        children: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(top: 8),
+            child: ListTile(
+              leading: Icon(MdiIcons.checkboxBlankOutline),
+              title: Text('John Doe'),
             ),
-            Row(
-              children: <Widget>[
-                FlatButton(
-                  child: Text("Light"),
-                  onPressed: () {
-                    Provider
-                        .of<ThemesNotifier>(context, listen: false)
-                        .theme = AppTheme.Light;
-                  },
-                ),
-                FlatButton(
-                  child: Text("Dark"),
-                  onPressed: () {
-                    Provider
-                        .of<ThemesNotifier>(context, listen: false)
-                        .theme = AppTheme.Dark;
-                  },
-                ),
-                FlatButton(
-                  child: Text("Purple"),
-                  onPressed: () {
-                    Provider
-                        .of<ThemesNotifier>(context, listen: false)
-                        .theme = AppTheme.Purple;
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
+          ),
+          Divider(indent: 72),
+          ListTile(
+            leading: Icon(MdiIcons.fileDocumentOutline),
+            title: Text('All drafts'),
+          ),
+          ListTile(
+            leading: Icon(MdiIcons.archiveOutline),
+            title: Text('Archive'),
+          ),
+          ListTile(
+            leading: Icon(MdiIcons.deleteOutline),
+            title: Text('Trash'),
+          ),
+          Divider(indent: 72),
+          ListTile(
+            leading: Icon(MdiIcons.labelOutline, color: Colors.lightBlue),
+            title: Text('Recipes', style: TextStyle(color: Colors.lightBlue)),
+          ),
+          ListTile(
+            leading: Icon(MdiIcons.labelOutline, color: Colors.lightGreen),
+            title:
+            Text('University', style: TextStyle(color: Colors.lightGreen)),
+          ),
+          Divider(indent: 72),
+          ListTile(
+            leading: Icon(MdiIcons.pencilOutline),
+            title: Text('Edit labels'),
+          ),
+          ListTile(
+            leading: Icon(MdiIcons.cogOutline),
+            title: Text('Settings'),
+            onTap: () {
+              Navigator.pushNamed(context, SettingsScreen.routeName);
+            },
+          ),
+        ],
       ),
     );
   }
