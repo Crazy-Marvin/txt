@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:txt/route/about.dart';
 import 'package:txt/route/settings.dart';
 import 'package:txt/themes.dart';
 import 'package:txt/widget/system_ui.dart';
@@ -67,6 +68,12 @@ class MainScreen extends StatelessWidget {
                   child: Text("Settings"),
                   onPressed: () {
                     Navigator.pushNamed(context, SettingsScreen.routeName);
+                  },
+                ),
+                RaisedButton(
+                  child: Text("About"),
+                  onPressed: () {
+                    Navigator.pushNamed(context, AboutScreen.routeName);
                   },
                 ),
               ],

@@ -72,22 +72,22 @@ BrightnessBased<ThemeData> _buildThemeData(AppTheme theme) {
   );
   return baseTheme
       .copyWith(
-      textTheme: baseTheme.textTheme.withAppFonts(),
-      primaryTextTheme: baseTheme.primaryTextTheme.withAppFonts(),
-      accentTextTheme: baseTheme.accentTextTheme.withAppFonts(),
-      bottomAppBarTheme: baseTheme.bottomAppBarTheme.copyWith(
-        shape: StadiumBorderNotchedRectangle(),
-        color: colorScheme.primary,
-      ),
-      bottomSheetTheme: baseTheme.bottomSheetTheme.copyWith(
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(
-            top: Radius.circular(16),
-          ),
+    textTheme: baseTheme.textTheme.withAppFonts(),
+    primaryTextTheme: baseTheme.primaryTextTheme.withAppFonts(),
+    accentTextTheme: baseTheme.accentTextTheme.withAppFonts(),
+    bottomAppBarTheme: baseTheme.bottomAppBarTheme.copyWith(
+      shape: StadiumBorderNotchedRectangle(),
+      color: colorScheme.primary,
+    ),
+    bottomSheetTheme: baseTheme.bottomSheetTheme.copyWith(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(16),
         ),
-        backgroundColor: colorScheme.surface,
       ),
-      buttonTheme: baseTheme.buttonTheme.copyWith())
+      backgroundColor: colorScheme.surface,
+    ),
+  )
       .asBrightnessBased();
 }
 

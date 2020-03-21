@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:txt/themes.dart';
 
+@immutable
 class SystemUiOverlayRegion extends StatelessWidget {
   final Widget child;
   final SystemUiOverlayStyle Function(BuildContext context) builder;
