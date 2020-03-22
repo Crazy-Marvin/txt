@@ -1,22 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:txt/widget/notched_shapes.dart';
 
-enum AppTheme { Auto, Light, Dark, Purple }
+enum AppColorScheme { Auto, Light, Dark, Purple }
 
-BrightnessBased<ThemeData> _buildThemeData(AppTheme theme) {
-  if (theme == AppTheme.Auto) {
+ThemeData getThemeData(AppColorScheme theme, BuildContext context) {
+  return getBrightnessBasedThemeData(theme).getByContext(context);
+}
+
+BrightnessBased<ThemeData> getBrightnessBasedThemeData(AppColorScheme theme) {
+  if (theme == AppColorScheme.Auto) {
     // Delegate to light and dark theme.
     return BrightnessBased(
-          () => _buildThemeData(AppTheme.Light).light,
-          () => _buildThemeData(AppTheme.Dark).dark,
+          () => getBrightnessBasedThemeData(AppColorScheme.Light).light,
+          () => getBrightnessBasedThemeData(AppColorScheme.Dark).dark,
     );
   }
 
   ColorScheme colorScheme;
   switch (theme) {
-    case AppTheme.Light:
+    case AppColorScheme.Light:
       colorScheme = ColorScheme.light(
         primary: Colors.white,
         primaryVariant: Colors.grey.shade100,
@@ -30,7 +35,7 @@ BrightnessBased<ThemeData> _buildThemeData(AppTheme theme) {
         onBackground: Colors.black,
       );
       break;
-    case AppTheme.Dark:
+    case AppColorScheme.Dark:
       colorScheme = ColorScheme.dark(
         primary: Colors.grey.shade800,
         primaryVariant: Colors.grey.shade800,
@@ -44,12 +49,12 @@ BrightnessBased<ThemeData> _buildThemeData(AppTheme theme) {
         onBackground: Colors.white,
       );
       break;
-    case AppTheme.Purple:
+    case AppColorScheme.Purple:
       colorScheme = ColorScheme.dark(
         primary: Color(0xFF6D0081),
         primaryVariant: Color(0xFF6D0081),
-        secondary: Color(0xFF6D0081),
-        secondaryVariant: Color(0xFFAC11B7),
+        secondary: Color(0xFFAC11B7),
+        secondaryVariant: Color(0xFF6D0081),
         surface: Color(0xFF6D0081),
         background: Color(0xFF35023E),
         onPrimary: Colors.white,
@@ -58,7 +63,7 @@ BrightnessBased<ThemeData> _buildThemeData(AppTheme theme) {
         onBackground: Colors.white,
       );
       break;
-    case AppTheme.Auto:
+    case AppColorScheme.Auto:
       throw StateError("Auto theme is delegate to light and dark theme.");
   }
   var baseTheme = ThemeData.from(colorScheme: colorScheme).copyWith(
@@ -87,6 +92,14 @@ BrightnessBased<ThemeData> _buildThemeData(AppTheme theme) {
       ),
       backgroundColor: colorScheme.surface,
     ),
+      cardTheme: baseTheme.cardTheme.copyWith(
+        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        shape: RoundedRectangleBorder(
+          borderRadius: const BorderRadius.all(
+            Radius.circular(8.0),
+          ),
+        ),
+      )
   )
       .asBrightnessBased();
 }
@@ -281,24 +294,42 @@ extension ThemeDataExtension on ThemeData {
 }
 
 class ThemesNotifier with ChangeNotifier {
-  static const _defaultTheme = AppTheme.Auto;
+  static const AppColorScheme _defaultTheme = AppColorScheme.Auto;
+  static const String _preferencesKey = "app_theme";
 
-  AppTheme _theme;
+  AppColorScheme _theme;
 
   factory ThemesNotifier() => ThemesNotifier.theme(_defaultTheme);
 
-  ThemesNotifier.theme(AppTheme theme) {
+  ThemesNotifier.theme(AppColorScheme theme) {
     this.theme = theme;
   }
 
-  AppTheme get theme => _theme;
+  static Future<ThemesNotifier> fromPreferences() async {
+    return ThemesNotifier.theme(await _getThemePreference());
+  }
 
-  set theme(AppTheme theme) {
+  AppColorScheme get theme => _theme;
+
+  set theme(AppColorScheme theme) {
     if (theme != null) {
       _theme = theme;
+      _setThemePreference(theme);
       notifyListeners();
     }
   }
 
-  BrightnessBased<ThemeData> get themeData => _buildThemeData(theme);
+  static Future<AppColorScheme> _getThemePreference() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    if (!prefs.containsKey(_preferencesKey)) return _defaultTheme;
+    return AppColorScheme.values[prefs.getInt(_preferencesKey)];
+  }
+
+  static Future<bool> _setThemePreference(AppColorScheme theme) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    return prefs.setInt(_preferencesKey, AppColorScheme.values.indexOf(theme));
+  }
+
+  BrightnessBased<ThemeData> get themeData =>
+      getBrightnessBasedThemeData(theme);
 }
