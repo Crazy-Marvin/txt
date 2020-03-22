@@ -20,7 +20,7 @@
 <stop offset="1" stop-color="#6E29FF"/>
 </linearGradient>
 <clipPath id="clip0">
-<rect width="108" height="108" fill="white"/>
+    <path d="M0 0H108V108H0V0Z" fill="white" />
 </clipPath>
 </defs>
 </svg>
