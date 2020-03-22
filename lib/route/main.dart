@@ -102,7 +102,12 @@ class MainMenu extends StatelessWidget {
   Widget build(BuildContext context) {
     return FractionallySizedBox(
       heightFactor: 0.65,
-      child: ListView(
+      child: ClipPath(
+        clipper: ShapeBorderClipper(shape: Theme
+            .of(context)
+            .bottomSheetTheme
+            .shape),
+        child: ListView(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(top: 8),
@@ -147,6 +152,7 @@ class MainMenu extends StatelessWidget {
             },
           ),
         ],
+      ),
       ),
     );
   }
