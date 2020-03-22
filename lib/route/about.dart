@@ -19,8 +19,8 @@ class AboutScreen extends StatelessWidget {
               padding: EdgeInsets.symmetric(horizontal: 16),
               child: Image.asset(
                 "assets/icon-squircle.png",
-                width: 128,
-                height: 128,
+                width: 96,
+                height: 96,
               ),
             ),
             SizedBox(height: 16),
@@ -57,6 +57,7 @@ class AboutScreen extends StatelessWidget {
               githubUrl: "https://github.com/kevttob",
               twitterUrl: "https://twitter.com/kevttob",
             ),
+            SizedBox(height: 8),
           ],
         ),
       ),
@@ -83,24 +84,14 @@ class _ContributorCard extends StatelessWidget {
     this.webUrl,
   }) : super(key: key);
 
-  _launchUrl(String url) async {
+  _launchUrl(String url, BuildContext context) async {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
+      final snackBar = SnackBar(content: Text('Could not open link.'));
+      Scaffold.of(context).showSnackBar(snackBar);
       throw 'Could not launch $url';
     }
-  }
-
-  _launchGitHub() async {
-    _launchUrl(githubUrl);
-  }
-
-  _launchTwitter() async {
-    _launchUrl(twitterUrl);
-  }
-
-  _launchWeb() async {
-    _launchUrl(webUrl);
   }
 
   @override
@@ -110,7 +101,7 @@ class _ContributorCard extends StatelessWidget {
       buttons.add(
         OutlineButton(
           child: Text("GitHub".toUpperCase()),
-          onPressed: _launchGitHub,
+          onPressed: () => _launchUrl(githubUrl, context),
         ),
       );
     }
@@ -118,7 +109,7 @@ class _ContributorCard extends StatelessWidget {
       buttons.add(
         OutlineButton(
           child: Text("Twitter".toUpperCase()),
-          onPressed: _launchTwitter,
+          onPressed: () => _launchUrl(twitterUrl, context),
         ),
       );
     }
@@ -126,7 +117,7 @@ class _ContributorCard extends StatelessWidget {
       buttons.add(
         OutlineButton(
           child: Text("Website".toUpperCase()),
-          onPressed: _launchWeb,
+          onPressed: () => _launchUrl(webUrl, context),
         ),
       );
     }
@@ -145,18 +136,17 @@ class _ContributorCard extends StatelessWidget {
       ),
     ];
     if (buttons.isNotEmpty) {
-      cardRows.addAll([
+      cardRows.add(
         Padding(
           padding: EdgeInsets.symmetric(horizontal: 8),
           child: ButtonBar(
             children: buttons,
           ),
         ),
-      ]);
+      );
     }
     return Card(
       child: Column(children: cardRows),
-      margin: EdgeInsets.all(8),
     );
   }
 }
