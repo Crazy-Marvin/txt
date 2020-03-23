@@ -21,12 +21,6 @@ class AppTheme extends SingleChildStatelessWidget {
   }
 }
 
-abstract class AppThemeEditor {
-  AppColorScheme colorScheme;
-
-  BrightnessBased<ThemeData> get themeData;
-}
-
 class _Notifier with ChangeNotifier implements AppThemeEditor {
   static const String _preferencesKey = "app_theme";
 

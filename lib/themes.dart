@@ -6,6 +6,12 @@ import 'package:txt/widget/notched_shapes.dart';
 
 enum AppColorScheme { Auto, Light, Dark, Purple }
 
+abstract class AppThemeEditor {
+  AppColorScheme colorScheme;
+
+  BrightnessBased<ThemeData> get themeData;
+}
+
 ThemeData getThemeData(AppColorScheme theme, BuildContext context) {
   return getBrightnessBasedThemeData(theme).getByContext(context);
 }
@@ -251,7 +257,7 @@ extension ThemeDataExtension on ThemeData {
     bool hasTopAppBar = true,
     bool hasBottomAppBar = false,
     SystemUiOverlayTheme statusBarTheme = SystemUiOverlayTheme.Darken,
-    SystemUiOverlayTheme navigationBarTheme = SystemUiOverlayTheme.Darken,
+    SystemUiOverlayTheme navigationBarTheme = SystemUiOverlayTheme.Same,
   }) {
     Brightness iconBrightness =
     brightness == Brightness.light ? Brightness.dark : Brightness.light;
