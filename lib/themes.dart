@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:txt/widget/notched_shapes.dart';
+import 'package:txt/widget/stadium_border_notched_rectangle.dart';
 
 enum AppColorScheme { Auto, Light, Dark, Purple }
 
