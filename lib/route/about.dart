@@ -90,7 +90,6 @@ class _ContributorCard extends StatelessWidget {
     } else {
       final snackBar = SnackBar(content: Text('Could not open link.'));
       Scaffold.of(context).showSnackBar(snackBar);
-      throw 'Could not launch $url';
     }
   }
 
