@@ -1,0 +1,40 @@
+Categories: (use those which apply)
+  - Reading
+  - Writing
+License: MIT
+
+WebSite: https://crazymarvin.com/txt/
+SourceCode: https://github.com/Crazy-Marvin/txt
+IssueTracker: https://github.com/Crazy-Marvin/txt/issues
+
+Changelog: https://github.com/Crazy-Marvin/txt/releases
+
+# You may not need to add Summary and Description here,
+# if you want to translate them. For details on other locations, see
+# https://f-droid.org/en/docs/All_About_Descriptions_Graphics_and_Screenshots/
+Summary: Simple text editor/notepad with cloud sync
+Description: |-
+  Simple text editor/notepad with cloud sync.
+
+RepoType: git
+Repo: https://github.com/Crazy-Marvin/txt
+
+# At least one for new apps
+Builds:
+  - versionName: "0.1.1"
+    versionCode: 2
+    commit: v0.1.0-alpha10
+    subdir: android/app
+    # TODO: Is it possible to build using Flutter?
+    gradle:
+      - yes
+    # output: some.apk
+    prebuild: sed -i -e
+
+
+# The following options are described at this location:
+# https://f-droid.org/docs/Build_Metadata_Reference/#UpdateCheckMode
+AutoUpdateMode: (see the manual)
+UpdateCheckMode: (see the manual)
+CurrentVersion: (current version name)
+CurrentVersionCode: (current version code, i.e. number)
