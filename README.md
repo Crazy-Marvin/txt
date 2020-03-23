@@ -6,6 +6,8 @@
 [![Issues](https://img.shields.io/github/issues/Crazy-Marvin/txt.svg?style=flat-square)](https://github.com/Crazy-Marvin/txt/issues)
 [![Pull requests](https://img.shields.io/github/issues-pr/Crazy-Marvin/txt.svg?style=flat-square)](https://github.com/Crazy-Marvin/txt/pulls)
 [![Coverage](https://img.shields.io/codecov/c/github/Crazy-Marvin/txt?style=flat-square)](https://codecov.io/gh/Crazy-Marvin/txt)
+[![Google Play](https://img.shields.io/badge/google%20play-app%20not%20found-red&style=flat-square)](https://play.google.com/store/apps/details?id=rocks.poopjournal.txt)
+[![F-Droid](https://img.shields.io/f-droid/v/rocks.poopjournal.txt?style=flat-square)](https://f-droid.org/en/packages/rocks.poopjournal.txt/)
 
 ![App icon](artwork/icon/github.png)
 
@@ -17,6 +19,12 @@ Simple text editor/notepad with cloud sync.
 
 1. Install dependencies: `flutter pub get`
 2. Build: `flutter build apk`, `flutter build ios` etc.
+
+## ToDo's
+- Add app to Google Play Store
+- Add app to F-Droid:  
+https://f-droid.org/en/docs/Build_Metadata_Reference/#autoupdatemode,  
+https://gitlab.com/fdroid/fdroiddata/blob/master/CONTRIBUTING.md
 
 ## Legal
 See our [terms of service](legal/terms-of-service.pdf) 
