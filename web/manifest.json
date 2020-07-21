@@ -1,0 +1,23 @@
+{
+    "name": "txt",
+    "short_name": "txt",
+    "start_url": ".",
+    "theme_color": "#6a1b9a",
+    "background_color": "#6a1b9a",
+    "description": "Simple text editor/notepad with cloud sync.",
+    "display": "standalone",
+    "orientation": "portrait-primary",
+    "prefer_related_applications": false,
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-256x256.png",
+            "sizes": "256x256",
+            "type": "image/png"
+        }
+    ]
+}
