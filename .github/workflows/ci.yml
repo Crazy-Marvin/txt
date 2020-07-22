@@ -19,6 +19,17 @@ jobs:
           flutter-version: "1.12.x"
       - name: "👤 Disable tracking"
         run: flutter config --no-analytics
+      - name: "🔑 Add secrets"
+        shell: bash
+        env:
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+        run: |
+          cat <<EOT >> secrets.yaml
+          google:
+            clientId: "$GOOGLE_CLIENT_ID"
+            clientSecret: "$GOOGLE_CLIENT_SECRET"
+          EOT
       - name: "🧰 Install dependencies"
         run: flutter pub get
       - name: "🏗 Build AOT Dart code"
