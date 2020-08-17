@@ -45,20 +45,22 @@ class _AppState extends State<App> {
       DeviceOrientation.portraitDown,
     ]);
     return AppTheme(
-      child: MaterialApp(
-        title: 'txt',
-        theme: AppTheme.of(context).themeData.light,
-        darkTheme: AppTheme.of(context).themeData.dark,
-        initialRoute: MainScreen.routeName,
-        routes: {
-          MainScreen.routeName: (context) => MainScreen(),
-          AboutScreen.routeName: (context) => AboutScreen(),
-          EditorScreen.routeName: (context) => EditorScreen(),
-          PreviewScreen.routeName: (context) => PreviewScreen(),
-          SettingsScreen.routeName: (context) => SettingsScreen(),
-          ThemesScreen.routeName: (context) => ThemesScreen(),
-        },
-      ),
+      child: Builder(builder: (context) {
+        return MaterialApp(
+          title: 'txt',
+          theme: AppTheme.of(context).themeData.light,
+          darkTheme: AppTheme.of(context).themeData.dark,
+          initialRoute: MainScreen.routeName,
+          routes: {
+            MainScreen.routeName: (context) => MainScreen(),
+            AboutScreen.routeName: (context) => AboutScreen(),
+            EditorScreen.routeName: (context) => EditorScreen(),
+            PreviewScreen.routeName: (context) => PreviewScreen(),
+            SettingsScreen.routeName: (context) => SettingsScreen(),
+            ThemesScreen.routeName: (context) => ThemesScreen(),
+          },
+        );
+      }),
     );
   }
 }
