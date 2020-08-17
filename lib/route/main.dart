@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:txt/file/note_manager.dart';
 import 'package:txt/route/about.dart';
 import 'package:txt/route/settings.dart';
 import 'package:txt/themes.dart';
@@ -54,7 +55,7 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
               floatingActionButtonLocation:
-              FloatingActionButtonLocation.centerDocked,
+                  FloatingActionButtonLocation.centerDocked,
               floatingActionButton: FloatingActionButton.extended(
                 onPressed: () {
                   final snackBar = SnackBar(content: Text('Create new file.'));
@@ -77,6 +78,26 @@ class MainScreen extends StatelessWidget {
                       child: Text("About"),
                       onPressed: () {
                         Navigator.pushNamed(context, AboutScreen.routeName);
+                      },
+                    ),
+                    FutureBuilder(
+                      future: NoteManager.list(order: NotesOrder.Title)
+                          .then((notes) {
+                        Iterable<Future<String>> notePreviews =
+                        notes.map((note) async {
+                          return "${note.title} * ${note.type} * ${note
+                              .state} * ${note.tags.map((e) => "#$e").join(
+                              " ")} * ${await note.excerpt}";
+                        });
+                        print(notePreviews);
+                        return Future.wait(notePreviews, eagerError: true);
+                      }),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData) {
+                          return Text(snapshot.data.join("\n"));
+                        } else {
+                          return Text("Loading...");
+                        }
                       },
                     ),
                   ],
