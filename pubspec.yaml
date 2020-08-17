@@ -23,6 +23,13 @@ dependencies:
   googleapis_auth: ^0.2.12
   flutter_secure_storage: ^3.3.3
   yaml: ^2.2.1
+  watcher: ^0.9.7+15
+  async: ^2.4.1
+  background_fetch: ^0.5.1
+  tuple: ^1.0.3
+  mime_type: ^0.3.2
+  open_file: ^3.0.1
+  path: ^1.7.0
 
 dev_dependencies:
   flutter_test:
@@ -33,7 +40,7 @@ flutter:
   uses-material-design: true
   assets:
   - secrets.yaml
-    - assets/icon-squircle.png
-    - assets/avatars/janheinrichreimer.png
-    - assets/avatars/kevinaguilar.png
-    - assets/avatars/marvinmeissner.png
+  - assets/icon-squircle.png
+  - assets/avatars/janheinrichreimer.png
+  - assets/avatars/kevinaguilar.png
+  - assets/avatars/marvinmeissner.png
