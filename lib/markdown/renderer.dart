@@ -147,3 +147,52 @@ class MarkdownSyntaxRenderer implements MarkdownRenderer<TextSpan> {
     _applyTextStyle(style: MarkdownSyntaxStyles.syntax, start: start, end: end);
   }
 }
+
+class StripMarkdownRenderer implements MarkdownRenderer<String> {
+  static final Set<String> _ignoredTags = {
+    "img",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "h5",
+    "h6"
+  };
+
+  StringBuffer _output;
+  int _outputIgnored;
+
+  @override
+  String render(List<Node> nodes) {
+    _output = StringBuffer();
+    _outputIgnored = 0;
+    for (final node in nodes) node.accept(this);
+    print(_output);
+    return _output.toString();
+  }
+
+  @override
+  bool visitElementBefore(Element element) {
+    if (_ignoredTags.contains(element.tag)) {
+      _outputIgnored++;
+    }
+    return true;
+  }
+
+  @override
+  void visitElementAfter(Element element) {
+    if (_ignoredTags.contains(element.tag)) {
+      _outputIgnored--;
+    }
+    if (_ignoredTags.contains(element.tag)) {
+      _output.write("\n");
+    }
+  }
+
+  @override
+  void visitText(Text text) {
+    if (_outputIgnored == 0) {
+      _output.write(text.text);
+    }
+  }
+}
