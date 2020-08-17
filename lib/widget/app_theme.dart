@@ -35,7 +35,10 @@ class _Notifier with ChangeNotifier implements AppThemeEditor {
   Future<void> _init() async {
     AppColorScheme colorScheme = await _loadPreference();
     if (_colorScheme == null) {
-      this.colorScheme = colorScheme;
+      _colorScheme = colorScheme;
+    }
+    if (_colorScheme == null) {
+      _colorScheme = _preLoadColorScheme;
     }
   }
 
