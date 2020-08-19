@@ -113,7 +113,7 @@ class NoteManager {
   static Future<List<Note>> list(
       {NoteState state, NoteType type, NotesOrder order}) async {
     Directory notesDir = await _notesDir();
-    Iterable<Note> notes = notesDir.listSync().map((file) => Note(file));
+    Stream<Note> notes = notesDir.list().map((file) => Note(file));
     if (state != null) {
       notes = notes.where((note) => note.state == state);
     }
@@ -121,7 +121,7 @@ class NoteManager {
       notes = notes.where((note) => note.type == type);
     }
     if (order != null) {
-      List<Note> notesList = notes.toList();
+      List<Note> notesList = await notes.toList();
       notesList.sort((a, b) {
         switch (order) {
           case NotesOrder.Title:
@@ -133,7 +133,7 @@ class NoteManager {
         }
         return 0;
       });
-      notes = notesList;
+      notes = Stream.fromIterable(notesList);
     }
     return notes.toList();
   }
