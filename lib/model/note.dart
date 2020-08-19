@@ -75,30 +75,29 @@ class Note {
   Stream<List<int>> get _stream => file.openRead();
 
   Future<String> get excerpt async {
-    Stream<String> lines;
+    Stream<String> lines =
+        _stream.transform(Utf8Decoder()).transform(LineSplitter());
     switch (type) {
       case NoteType.Txt:
-        lines = _stream.transform(Utf8Decoder()).transform(LineSplitter());
         break;
       case NoteType.Md:
+        List<String> markdownLines = await lines.toList();
         md.Document document = md.Document(
           extensionSet: md.ExtensionSet.gitHubWeb,
         );
-        List<String> markdownLines = await _stream
-            .transform(Utf8Decoder())
-            .transform(LineSplitter())
-            .toList();
-        String text =
-            StripMarkdownRenderer().render(document.parseLines(markdownLines));
+        List<md.Node> nodes = document.parseLines(markdownLines);
+        String text = StripMarkdownRenderer().render(nodes);
         lines = Stream.fromIterable(LineSplitter.split(text));
         break;
     }
     lines = lines.where((line) => line.isNotEmpty);
-    List<String> lineList = await lines.take(1).toList();
+    List<String> lineList = await lines.take(3).toList();
     if (lineList.isEmpty) {
       return "";
     } else {
       return lineList.join("\n");
     }
   }
+
+  Future<String> get content async => file.readAsString();
 }
