@@ -38,6 +38,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  fonts:
+  - family: Txt
+    fonts:
+    - asset: assets/icons/Txt.ttf
   assets:
   - secrets.yaml
   - assets/icon-squircle.png
