@@ -2,10 +2,10 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:txt/themes.dart';
 import 'package:txt/widget/app_theme.dart';
 import 'package:txt/widget/system_ui.dart';
+import 'package:txt/widget/txt_icons.dart';
 
 class ThemesScreen extends StatelessWidget {
   static const routeName = '/settings/themes';
@@ -26,7 +26,7 @@ class ThemesScreen extends StatelessWidget {
               subtitle: "A wonderful theme",
               description: "This is where you write a note to "
                   "show off this beautiful theme.",
-              icon: MdiIcons.brightnessAuto,
+              icon: TxtIcons.themeAuto,
             ),
             _ColorSchemeCard(
               colorScheme: AppColorScheme.Light,
@@ -34,7 +34,7 @@ class ThemesScreen extends StatelessWidget {
               subtitle: "A wonderful theme",
               description: "This is where you write a note to "
                   "show off this beautiful theme.",
-              icon: MdiIcons.brightness5,
+              icon: TxtIcons.themeLight,
             ),
             _ColorSchemeCard(
               colorScheme: AppColorScheme.Dark,
@@ -42,7 +42,7 @@ class ThemesScreen extends StatelessWidget {
               subtitle: "A wonderful theme",
               description: "This is where you write a note to "
                   "show off this beautiful theme.",
-              icon: MdiIcons.weatherNight,
+              icon: TxtIcons.themeDark,
             ),
             _ColorSchemeCard(
               colorScheme: AppColorScheme.Purple,
@@ -50,7 +50,7 @@ class ThemesScreen extends StatelessWidget {
               subtitle: "A wonderful theme",
               description: "This is where you write a note to "
                   "show off this beautiful theme.",
-              icon: MdiIcons.formatColorFill,
+              icon: TxtIcons.themePurple,
             ),
             SizedBox(height: 8),
           ],
@@ -78,16 +78,12 @@ class _ColorSchemeCard extends StatelessWidget {
   });
 
   _isThemeSelected(BuildContext context) {
-    return AppTheme
-        .of(context)
-        .colorScheme == colorScheme;
+    return AppTheme.of(context).colorScheme == colorScheme;
   }
 
   _selectTheme(BuildContext context) {
     Timer(Duration(milliseconds: 150), () {
-      AppTheme
-          .of(context, listen: false)
-          .colorScheme = colorScheme;
+      AppTheme.of(context, listen: false).colorScheme = colorScheme;
     });
   }
 
@@ -112,10 +108,7 @@ class _ColorSchemeCard extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
               child: Text(
                 subtitle,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .subtitle,
+                style: Theme.of(context).textTheme.subtitle,
               ),
             ),
           );
@@ -126,25 +119,20 @@ class _ColorSchemeCard extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
               child: Text(
                 description,
-                style: Theme
-                    .of(context)
-                    .textTheme
-                    .body1,
+                style: Theme.of(context).textTheme.body1,
               ),
             ),
           );
         }
-        ShapeBorder cardShape = Theme
-            .of(context)
-            .cardTheme
-            .shape;
+        ShapeBorder cardShape = Theme.of(context).cardTheme.shape;
         return Card(
           child: InkWell(
             onTap: () {
               _selectTheme(context);
             },
-            borderRadius:
-            cardShape is RoundedRectangleBorder ? cardShape.borderRadius : null,
+            borderRadius: cardShape is RoundedRectangleBorder
+                ? cardShape.borderRadius
+                : null,
             child: Column(
               children: cardRows,
               crossAxisAlignment: CrossAxisAlignment.stretch,

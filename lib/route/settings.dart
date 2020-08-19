@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:preferences/preferences.dart';
 import 'package:txt/route/about.dart';
 import 'package:txt/route/themes.dart';
 import 'package:txt/widget/system_ui.dart';
+import 'package:txt/widget/txt_icons.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -13,8 +13,8 @@ class SettingsScreen extends StatelessWidget {
     String subject = "txt App Feedback";
     String recipient = "marvin@poopjournal.rocks";
     String cc = "mail@reimer.software";
-    String url = "mailto:$recipient?cc=$cc&subject=${Uri.encodeQueryComponent(
-        subject)}";
+    String url =
+        "mailto:$recipient?cc=$cc&subject=${Uri.encodeQueryComponent(subject)}";
     if (await canLaunch(url)) {
       await launch(url);
     } else {
@@ -38,11 +38,8 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             title: Text("App theme"),
             trailing: Icon(
-              MdiIcons.recordCircle,
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .secondary,
+              TxtIcons.theme,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onTap: () {
               Navigator.pushNamed(context, ThemesScreen.routeName);
@@ -86,11 +83,8 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             title: Text("About txt"),
             leading: Icon(
-              MdiIcons.informationOutline,
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .secondary,
+              TxtIcons.information,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onTap: () {
               Navigator.pushNamed(context, AboutScreen.routeName);
@@ -99,11 +93,8 @@ class SettingsScreen extends StatelessWidget {
           ListTile(
             title: Text("Send feedback"),
             leading: Icon(
-              MdiIcons.messageAlertOutline,
-              color: Theme
-                  .of(context)
-                  .colorScheme
-                  .secondary,
+              TxtIcons.feedback,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             onTap: () => _sendFeedback(context),
           ),

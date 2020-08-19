@@ -1,11 +1,11 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:txt/file/note_manager.dart';
-import 'package:txt/route/about.dart';
+import 'package:txt/model/note.dart';
 import 'package:txt/route/settings.dart';
 import 'package:txt/themes.dart';
+import 'package:txt/widget/note_tile.dart';
 import 'package:txt/widget/system_ui.dart';
+import 'package:txt/widget/txt_icons.dart';
 
 class MainScreen extends StatelessWidget {
   static const routeName = '/';
@@ -37,7 +37,7 @@ class MainScreen extends StatelessWidget {
                 title: Text(
                   'txt'.toUpperCase(),
                 ),
-                leading: Icon(MdiIcons.checkboxBlankOutline),
+                leading: Icon(TxtIcons.blank),
               ),
               bottomNavigationBar: BottomAppBar(
                 child: Row(
@@ -48,7 +48,7 @@ class MainScreen extends StatelessWidget {
                       onPressed: () => _showMenu(context),
                     ),
                     IconButton(
-                      icon: Icon(MdiIcons.sortVariant),
+                      icon: Icon(TxtIcons.filter),
                       onPressed: () => _showSort(context),
                     ),
                   ],
@@ -62,53 +62,47 @@ class MainScreen extends StatelessWidget {
                   Scaffold.of(context).showSnackBar(snackBar);
                 },
                 label: Text('New draft'.toUpperCase()),
-                icon: Icon(MdiIcons.plus),
+                icon: Icon(TxtIcons.add),
               ),
-              body: Padding(
-                padding: EdgeInsets.all(16),
-                child: Column(
-                  children: <Widget>[
-                    RaisedButton(
-                      child: Text("Settings"),
-                      onPressed: () {
-                        Navigator.pushNamed(context, SettingsScreen.routeName);
-                      },
-                    ),
-                    RaisedButton(
-                      child: Text("About"),
-                      onPressed: () {
-                        Navigator.pushNamed(context, AboutScreen.routeName);
-                      },
-                    ),
-                    FutureBuilder(
-                      future: NoteManager.list(order: NotesOrder.Title)
-                          .then((notes) {
-                        Iterable<Future<String>> notePreviews =
-                        notes.map((note) async {
-                          return "${note.title} * ${note.type} * ${note
-                              .state} * ${note.tags.map((e) => "#$e").join(
-                              " ")} * ${await note.excerpt}";
-                        });
-                        print(notePreviews);
-                        return Future.wait(notePreviews, eagerError: true);
-                      }),
-                      builder: (context, snapshot) {
-                        if (snapshot.hasData) {
-                          return Text(snapshot.data.join("\n"));
-                        } else {
-                          return Text("Loading...");
-                        }
-                      },
-                    ),
-                  ],
+              body: RefreshIndicator(
+                onRefresh: () async {},
+                child: FutureBuilder(
+                  future: NoteManager.list(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List<Note> notes = snapshot.data;
+                      return ListView.builder(
+                        itemBuilder: (context, index) {
+                          if (index >= notes.length) return null;
+                          return NoteTile(notes[index]);
+                        },
+                      );
+                    } else {
+                      return SingleChildScrollView(
+                        child: Center(
+                          child: Padding(
+                            padding: EdgeInsets.all(16),
+                            child: Column(
+                              children: [
+                                CircularProgressIndicator(
+                                  value: null,
+                                ),
+                                SizedBox(height: 16),
+                                Text("Loading..."),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ),
             ),
-            builder: (context) =>
-                Theme.of(context).systemUiOverlayStyle(
-                  hasTopAppBar: false,
-                  hasBottomAppBar: true,
-                ),
+            builder: (context) => Theme.of(context).systemUiOverlayStyle(
+              hasTopAppBar: false,
+              hasBottomAppBar: true,
+            ),
           );
         },
       ),
@@ -130,42 +124,39 @@ class MainMenu extends StatelessWidget {
       heightFactor: 0.65,
       child: ClipPath(
         clipper:
-        ShapeBorderClipper(shape: Theme
-            .of(context)
-            .bottomSheetTheme
-            .shape),
+            ShapeBorderClipper(shape: Theme.of(context).bottomSheetTheme.shape),
         child: ListView(
           children: <Widget>[
             Padding(
               padding: EdgeInsets.only(top: 8),
               child: ListTile(
-                leading: Icon(MdiIcons.checkboxBlankOutline),
+                leading: Icon(TxtIcons.blank),
                 title: Text('John Doe'),
               ),
             ),
             Divider(indent: 72),
             ListTile(
-              leading: Icon(MdiIcons.fileDocumentOutline),
+              leading: Icon(TxtIcons.document),
               title: Text('All drafts'),
             ),
             ListTile(
-              leading: Icon(MdiIcons.archiveOutline),
+              leading: Icon(TxtIcons.archive),
               title: Text('Archive'),
             ),
             ListTile(
-              leading: Icon(MdiIcons.deleteOutline),
+              leading: Icon(TxtIcons.trash),
               title: Text('Trash'),
             ),
             Divider(indent: 72),
             ListTile(
-              leading: Icon(MdiIcons.labelOutline, color: Colors.lightBlue),
+              leading: Icon(TxtIcons.label, color: Colors.lightBlue),
               title: Text(
                 'Recipes',
                 style: TextStyle(color: Colors.lightBlue),
               ),
             ),
             ListTile(
-              leading: Icon(MdiIcons.labelOutline, color: Colors.lightGreen),
+              leading: Icon(TxtIcons.label, color: Colors.lightGreen),
               title: Text(
                 'University',
                 style: TextStyle(color: Colors.lightGreen),
@@ -173,11 +164,11 @@ class MainMenu extends StatelessWidget {
             ),
             Divider(indent: 72),
             ListTile(
-              leading: Icon(MdiIcons.pencilOutline),
+              leading: Icon(TxtIcons.edit),
               title: Text('Edit labels'),
             ),
             ListTile(
-              leading: Icon(MdiIcons.cogOutline),
+              leading: Icon(TxtIcons.settings),
               title: Text('Settings'),
               onTap: () {
                 Navigator.pushNamed(context, SettingsScreen.routeName);
