@@ -20,8 +20,8 @@ BrightnessBased<ThemeData> getBrightnessBasedThemeData(AppColorScheme theme) {
   if (theme == AppColorScheme.Auto) {
     // Delegate to light and dark theme.
     return BrightnessBased(
-          () => getBrightnessBasedThemeData(AppColorScheme.Light).light,
-          () => getBrightnessBasedThemeData(AppColorScheme.Dark).dark,
+      () => getBrightnessBasedThemeData(AppColorScheme.Light).light,
+      () => getBrightnessBasedThemeData(AppColorScheme.Dark).dark,
     );
   }
 
@@ -98,14 +98,14 @@ BrightnessBased<ThemeData> getBrightnessBasedThemeData(AppColorScheme theme) {
       ),
       backgroundColor: colorScheme.surface,
     ),
-      cardTheme: baseTheme.cardTheme.copyWith(
-        margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-        shape: RoundedRectangleBorder(
-          borderRadius: const BorderRadius.all(
-            Radius.circular(8.0),
-          ),
+    cardTheme: baseTheme.cardTheme.copyWith(
+      margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      shape: RoundedRectangleBorder(
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8.0),
         ),
-      )
+      ),
+    ),
   )
       .asBrightnessBased();
 }
@@ -115,9 +115,18 @@ extension AppFontsTextTheme on TextTheme {
     return GoogleFonts.workSansTextTheme(
       this,
     ).copyWith(
-      title: GoogleFonts.poppins(
-        textStyle: title,
-        fontWeight: FontWeight.w800,
+      headline1: GoogleFonts.poppins(textStyle: headline1),
+      headline2: GoogleFonts.poppins(textStyle: headline2),
+      headline3: GoogleFonts.poppins(textStyle: headline3),
+      headline4: GoogleFonts.poppins(textStyle: headline4),
+      headline5: GoogleFonts.poppins(textStyle: headline5),
+      headline6: GoogleFonts.poppins(
+        textStyle: headline6,
+        fontWeight: FontWeight.bold,
+      ),
+      subtitle1: GoogleFonts.workSans(
+        textStyle: subtitle1,
+        fontWeight: FontWeight.w500,
       ),
       button: GoogleFonts.poppins(
         textStyle: button,
