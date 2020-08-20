@@ -266,7 +266,7 @@ extension ThemeDataExtension on ThemeData {
     SystemUiOverlayTheme navigationBarTheme = SystemUiOverlayTheme.Same,
   }) {
     Brightness iconBrightness =
-    brightness == Brightness.light ? Brightness.dark : Brightness.light;
+        brightness == Brightness.light ? Brightness.dark : Brightness.light;
 
     Color statusBarBaseColor;
     if (hasTopAppBar) {
@@ -287,7 +287,7 @@ extension ThemeDataExtension on ThemeData {
       statusBarIconBrightness: iconBrightness,
       statusBarBrightness: brightness,
       systemNavigationBarColor:
-      navigationBarBaseColor.systemUiColor(navigationBarTheme),
+          navigationBarBaseColor.systemUiColor(navigationBarTheme),
       systemNavigationBarIconBrightness: iconBrightness,
     );
     return style;
