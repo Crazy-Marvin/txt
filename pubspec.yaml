@@ -29,6 +29,7 @@ dependencies:
   mime_type: ^0.3.2
   open_file: ^3.0.1
   path: ^1.7.0
+  modal_bottom_sheet: ^0.2.0+1
 
 dev_dependencies:
   flutter_test:
