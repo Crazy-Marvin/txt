@@ -167,7 +167,6 @@ class StripMarkdownRenderer implements MarkdownRenderer<String> {
     _output = StringBuffer();
     _outputIgnored = 0;
     for (final node in nodes) node.accept(this);
-    print(_output);
     return _output.toString();
   }
 
