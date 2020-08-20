@@ -5,8 +5,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:txt/model/note.dart';
 import 'package:txt/util/file_extension.dart';
 
-enum NotesOrder { Title, LastModified }
-
 extension SC on File {
   _sampleContentIfEmpty() {
     if (this.lengthSync() > 0) return;
@@ -111,7 +109,7 @@ class NoteManager {
   }
 
   static Future<List<Note>> list(
-      {NoteState state, NoteType type, NotesOrder order}) async {
+      {NoteState state, NoteType type, String tag, NoteSort sort}) async {
     Directory notesDir = await _notesDir();
     Stream<Note> notes = notesDir.list().map((file) => Note(file));
     if (state != null) {
@@ -120,13 +118,16 @@ class NoteManager {
     if (type != null) {
       notes = notes.where((note) => note.type == type);
     }
-    if (order != null) {
+    if (tag != null) {
+      notes = notes.where((note) => note.tags.contains(tag));
+    }
+    if (sort != null) {
       List<Note> notesList = await notes.toList();
       notesList.sort((a, b) {
-        switch (order) {
-          case NotesOrder.Title:
+        switch (sort) {
+          case NoteSort.Title:
             return a.title.compareTo(b.title);
-          case NotesOrder.LastModified:
+          case NoteSort.LastModified:
             return -a.file
                 .lastModifiedSync()
                 .compareTo(b.file.lastModifiedSync());
@@ -136,6 +137,11 @@ class NoteManager {
       notes = Stream.fromIterable(notesList);
     }
     return notes.toList();
+  }
+
+  static Future<Set<String>> listTags() async {
+    List<Note> notes = await list();
+    return notes.expand((note) => note.tags).toSet();
   }
 
   static Future add() async {

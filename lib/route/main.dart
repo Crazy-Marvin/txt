@@ -1,27 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:txt/file/note_manager.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:txt/model/note.dart';
-import 'package:txt/route/settings.dart';
 import 'package:txt/themes.dart';
-import 'package:txt/widget/note_tile.dart';
+import 'package:txt/widget/main_menu.dart';
+import 'package:txt/widget/note_list.dart';
+import 'package:txt/widget/note_sort_menu.dart';
 import 'package:txt/widget/system_ui.dart';
 import 'package:txt/widget/txt_icons.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   static const routeName = '/';
 
-  void _showMenu(BuildContext context) {
-    showModalBottomSheet(
+  @override
+  _MainScreenState createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  NoteState _noteState = NoteState.Normal;
+  NoteType _noteType;
+  NoteSort _noteOrder = NoteSort.Title;
+
+  void _showMenu() {
+    showMaterialModalBottomSheet(
       context: context,
-      isScrollControlled: true,
-      builder: (builder) => MainMenu(),
+      backgroundColor: Colors.transparent,
+      builder: (builder, controller) => MainMenu(
+        noteState: _noteState,
+        noteStateCallback: (state) {
+          Navigator.of(context).pop();
+          setState(() {
+            _noteState = state;
+          });
+        },
+        controller: controller,
+      ),
     );
   }
 
-  void _showSort(BuildContext context) {
+  void _showSortMenu() {
     showModalBottomSheet(
       context: context,
-      builder: (builder) => MainSortList(),
+      builder: (builder) => NoteSortMenu(
+        noteOrder: _noteOrder,
+        noteOrderCallback: (order) {
+          Navigator.of(context).pop();
+          setState(() {
+            _noteOrder = order;
+          });
+        },
+      ),
     );
   }
 
@@ -32,70 +59,52 @@ class MainScreen extends StatelessWidget {
       child: Builder(
         builder: (BuildContext context) {
           return SystemUiOverlayRegion(
-            child: Scaffold(
-              appBar: AppBar(
-                title: Text(
-                  'txt'.toUpperCase(),
-                ),
-                leading: Icon(TxtIcons.blank),
-              ),
-              bottomNavigationBar: BottomAppBar(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    IconButton(
-                      icon: Icon(Icons.menu),
-                      onPressed: () => _showMenu(context),
-                    ),
-                    IconButton(
-                      icon: Icon(TxtIcons.filter),
-                      onPressed: () => _showSort(context),
-                    ),
-                  ],
-                ),
-              ),
-              floatingActionButtonLocation:
-                  FloatingActionButtonLocation.centerDocked,
-              floatingActionButton: FloatingActionButton.extended(
-                onPressed: () {
-                  final snackBar = SnackBar(content: Text('Create new file.'));
-                  Scaffold.of(context).showSnackBar(snackBar);
-                },
-                label: Text('New draft'.toUpperCase()),
-                icon: Icon(TxtIcons.add),
-              ),
-              body: RefreshIndicator(
-                onRefresh: () async {},
-                child: FutureBuilder(
-                  future: NoteManager.list(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasData) {
-                      List<Note> notes = snapshot.data;
-                      return ListView.builder(
-                        itemBuilder: (context, index) {
-                          if (index >= notes.length) return null;
-                          return NoteTile(notes[index]);
-                        },
-                      );
-                    } else {
-                      return SingleChildScrollView(
-                        child: Center(
-                          child: Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Column(
-                              children: [
-                                CircularProgressIndicator(
-                                  value: null,
-                                ),
-                                SizedBox(height: 16),
-                                Text("Loading..."),
-                              ],
-                            ),
-                          ),
+            child: RefreshIndicator(
+              onRefresh: () async {},
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text(
+                    'txt'.toUpperCase(),
+                    style: Theme.of(context).textTheme.headline6.copyWith(
+                          fontWeight: FontWeight.w900,
                         ),
-                      );
-                    }
+                  ),
+                  leading: Icon(TxtIcons.blank),
+                ),
+                bottomNavigationBar: BottomAppBar(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: <Widget>[
+                      IconButton(
+                        icon: Icon(TxtIcons.drawer),
+                        onPressed: () => _showMenu(),
+                      ),
+                      IconButton(
+                        icon: Icon(TxtIcons.filter),
+                        onPressed: () => _showSortMenu(),
+                      ),
+                    ],
+                  ),
+                ),
+                floatingActionButtonLocation:
+                    FloatingActionButtonLocation.centerDocked,
+                floatingActionButton: Builder(
+                  builder: (context) {
+                    return FloatingActionButton.extended(
+                      onPressed: () {
+                        final snackBar =
+                            SnackBar(content: Text('Create new file.'));
+                        Scaffold.of(context).showSnackBar(snackBar);
+                      },
+                      label: Text('New draft'.toUpperCase()),
+                      icon: Icon(TxtIcons.add),
+                    );
                   },
+                ),
+                body: NoteList(
+                  state: _noteState,
+                  type: _noteType,
+                  sort: _noteOrder,
                 ),
               ),
             ),
@@ -105,77 +114,6 @@ class MainScreen extends StatelessWidget {
             ),
           );
         },
-      ),
-    );
-  }
-}
-
-class MainSortList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Text("Placeholder");
-  }
-}
-
-class MainMenu extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FractionallySizedBox(
-      heightFactor: 0.65,
-      child: ClipPath(
-        clipper:
-            ShapeBorderClipper(shape: Theme.of(context).bottomSheetTheme.shape),
-        child: ListView(
-          children: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(top: 8),
-              child: ListTile(
-                leading: Icon(TxtIcons.blank),
-                title: Text('John Doe'),
-              ),
-            ),
-            Divider(indent: 72),
-            ListTile(
-              leading: Icon(TxtIcons.document),
-              title: Text('All drafts'),
-            ),
-            ListTile(
-              leading: Icon(TxtIcons.archive),
-              title: Text('Archive'),
-            ),
-            ListTile(
-              leading: Icon(TxtIcons.trash),
-              title: Text('Trash'),
-            ),
-            Divider(indent: 72),
-            ListTile(
-              leading: Icon(TxtIcons.label, color: Colors.lightBlue),
-              title: Text(
-                'Recipes',
-                style: TextStyle(color: Colors.lightBlue),
-              ),
-            ),
-            ListTile(
-              leading: Icon(TxtIcons.label, color: Colors.lightGreen),
-              title: Text(
-                'University',
-                style: TextStyle(color: Colors.lightGreen),
-              ),
-            ),
-            Divider(indent: 72),
-            ListTile(
-              leading: Icon(TxtIcons.edit),
-              title: Text('Edit labels'),
-            ),
-            ListTile(
-              leading: Icon(TxtIcons.settings),
-              title: Text('Settings'),
-              onTap: () {
-                Navigator.pushNamed(context, SettingsScreen.routeName);
-              },
-            ),
-          ],
-        ),
       ),
     );
   }

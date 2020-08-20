@@ -10,21 +10,40 @@ class NoteTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: Builder(builder: (context) {
-        switch (note.type) {
-          case NoteType.Txt:
-            return Icon(TxtIcons.fileText);
-          case NoteType.Md:
-            return Icon(TxtIcons.fileMarkdown);
-        }
-        throw "Unknown note type: '${note.type}'.";
-      }),
-      title: Text(note.title),
+      dense: false,
+      leading: Column(
+        children: [
+          Builder(builder: (_) {
+            var icon;
+            switch (note.type) {
+              case NoteType.Txt:
+                icon = TxtIcons.fileText;
+                break;
+              case NoteType.Md:
+                icon = TxtIcons.fileMarkdown;
+                break;
+            }
+            return Icon(icon);
+          }),
+          Spacer(),
+        ],
+      ),
+      title: Text(
+        note.title,
+        style: Theme.of(context)
+            .textTheme
+            .subtitle1
+            .apply(color: Theme.of(context).accentColor),
+      ),
       subtitle: FutureBuilder(
         future: note.excerpt,
         builder: (context, snapshot) {
           if (!snapshot.hasData) return Container();
-          return Text(snapshot.data);
+          return Text(
+            snapshot.data,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+          );
         },
       ),
     );

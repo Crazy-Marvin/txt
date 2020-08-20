@@ -12,6 +12,8 @@ enum NoteType { Txt, Md }
 
 enum NoteState { Normal, Archived, Trashed }
 
+enum NoteSort { Title, LastModified }
+
 @immutable
 /**
  * Represents a note file.
@@ -95,7 +97,7 @@ class Note {
     if (lineList.isEmpty) {
       return "";
     } else {
-      return lineList.join("\n");
+      return lineList.join(" ");
     }
   }
 
