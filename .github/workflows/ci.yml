@@ -16,7 +16,7 @@ jobs:
       - name: "🧰 Install Flutter"
         uses: subosito/flutter-action@v1
         with:
-          flutter-version: "1.12.x"
+          flutter-version: "1.22.4"
       - name: "👤 Disable tracking"
         run: flutter config --no-analytics
       - name: "🔑 Add secrets"
