@@ -4,10 +4,11 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:nextcloud/nextcloud.dart';
 import 'package:nextcloud/nextcloud.dart' as nc;
+import 'package:path/path.dart';
 import 'package:txt/sync/file.dart';
 import 'package:txt/sync/sync.dart';
 
-class NextcloudSyncService implements SyncService {
+class NextcloudSyncService extends SyncService {
   NextCloudClient client;
 
   @override
@@ -36,7 +37,14 @@ class NextcloudSyncService implements SyncService {
   Future<void> download(String remotePath, String localPath) async {
     ByteStream downloadStream = await client.webDav.downloadStream(remotePath);
     File localFile = File(localPath);
-    if (localFile.existsSync()) localFile.deleteSync();
+    // Delete existing file.
+    if (localFile.existsSync()) {
+      localFile.deleteSync();
+    }
+    // Create parent directories.
+    if (!await localFile.parent.exists()) {
+      localFile.parent.create(recursive: true);
+    }
     IOSink localSink = localFile.openWrite();
     await localSink.addStream(downloadStream);
     await localSink.close();
@@ -44,6 +52,10 @@ class NextcloudSyncService implements SyncService {
 
   @override
   Future<void> upload(String localPath, String remotePath) async {
+    // Create parent directories.
+    var parent = dirname(remotePath);
+    await client.webDav.mkdirs(parent);
+    // Upload file.
     File localFile = File(localPath);
     var localData = await localFile.readAsBytes();
     await client.webDav.upload(localData, remotePath);
