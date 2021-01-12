@@ -3,7 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:txt/sync/file.dart';
 import 'package:txt/sync/sync.dart';
 
-class DropboxSyncService implements SyncService {
+class DropboxSyncService extends SyncService {
   String token;
 
   @override
