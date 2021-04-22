@@ -19,6 +19,7 @@ dependencies:
   googleapis: ^2.0.0
   googleapis_auth: ^1.1.0
   html_unescape: ^2.0.0
+  json2yaml: ^1.0.1+1
   markdown: ^4.0.0
   mime_type: ^1.0.0
   modal_bottom_sheet: ^2.0.0
