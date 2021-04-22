@@ -1,26 +1,26 @@
 import 'dart:io';
 
+import 'package:async/async.dart';
+import 'package:flutter/material.dart';
+import 'package:json2yaml/json2yaml.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:txt/markdown/utils.dart';
 import 'package:txt/model/note.dart';
 import 'package:txt/util/file_extension.dart';
 
 extension SC on File {
-  _sampleContentIfEmpty() {
-    if (this.lengthSync() > 0) return;
+  Future _sampleContentIfEmpty({
+    NoteState state = NoteState.Normal,
+    Set<String> tags,
+  }) async {
+    if (await this.length() > 0) return;
+    var frontMatter = NoteSettings(state, tags).toYaml();
     switch (Note(this).type) {
-      case NoteType.Txt:
-        writeAsStringSync(
-            """Lorem markdownum spatiantia dextraque innocuos quoque datque adhuc.
-Inexperrectus amor Peucetiosque Halesi fessos census congestaque ramos latices
-vero, similisque! Nec Achelous fidesque sine,
-flammiferas nota. Nec corpora, stetit repulsa
-orantemque caelum in videns ademi fraxinus successit tamen versae visus; ego
-temerasse!""");
-        return;
       case NoteType.Md:
-        writeAsStringSync(
-            """# Tenet corpusque signa funera precibusque Aestas sibi
+        return writeAsStringSync("""$frontMatter
+---
+# Tenet corpusque signa funera precibusque Aestas sibi
 
 ## Crepuscula vestris hoc inque sic ferrum secreta
 
@@ -73,7 +73,16 @@ digitos](http://baculi-lycisce.net/caeso.html) iacebas: deus. Proxima sagittis
 sive oscula haesit lacerti possidet pectoris Phoebus solida vultuque. Qui
 ignibus inquit dantibus et *tumulos* enumerare me quae gentisque iussit; neque
 sucis ille abdidit.""");
-        return;
+      case NoteType.Txt:
+      default:
+        return writeAsString("""$frontMatter
+---
+Lorem markdownum spatiantia dextraque innocuos quoque datque adhuc.
+Inexperrectus amor Peucetiosque Halesi fessos census congestaque ramos latices
+vero, similisque! Nec Achelous fidesque sine,
+flammiferas nota. Nec corpora, stetit repulsa
+orantemque caelum in videns ademi fraxinus successit tamen versae visus; ego
+temerasse!""");
     }
   }
 }
@@ -86,43 +95,47 @@ class NoteManager {
         Directory(join(applicationDocumentsDirectory.path, "notes"))
           ..createIfNotExists();
 
-    File(join(notesDirectory.path, "test1..normal.md"))
+    File(join(notesDirectory.path, "test1.md"))
       ..createIfNotExists()
       .._sampleContentIfEmpty();
-    File(join(notesDirectory.path, "test2.foo bar.normal.txt"))
+    File(join(notesDirectory.path, "test2.txt"))
       ..createIfNotExists()
-      .._sampleContentIfEmpty();
-    File(join(notesDirectory.path, "test2.foo.bar.normal.txt"))
+      .._sampleContentIfEmpty(tags: {"foo bar"});
+    File(join(notesDirectory.path, "test2.txt"))
       ..createIfNotExists()
-      .._sampleContentIfEmpty();
-    File(join(notesDirectory.path, "test3.foo.archive.md"))
+      .._sampleContentIfEmpty(tags: {"foo", "bar"});
+    File(join(notesDirectory.path, "test3.md"))
       ..createIfNotExists()
-      .._sampleContentIfEmpty();
-    File(join(notesDirectory.path, "test4..trash.md"))
+      .._sampleContentIfEmpty(tags: {"foo"}, state: NoteState.Archived);
+    File(join(notesDirectory.path, "test4.md"))
       ..createIfNotExists()
-      .._sampleContentIfEmpty();
-    File(join(notesDirectory.path, "test5.bar.normal.md"))
+      .._sampleContentIfEmpty(state: NoteState.Trashed);
+    File(join(notesDirectory.path, "test5.md"))
       ..createIfNotExists()
-      .._sampleContentIfEmpty();
+      .._sampleContentIfEmpty(tags: {"bar"});
 
     return notesDirectory;
   }
 
-  static Future<List<Note>> list(
-      {NoteState state, NoteType type, String tag, NoteSort sort}) async {
+  static Future<List<Note>> list({
+    NoteState state,
+    NoteType type,
+    String tag,
+    NoteSort sort,
+  }) async {
     Directory notesDir = await _notesDir();
     Stream<Note> notes = notesDir.list().map((file) => Note(file));
-    if (state != null) {
-      notes = notes.where((note) => note.state == state);
-    }
-    if (type != null) {
-      notes = notes.where((note) => note.type == type);
-    }
-    if (tag != null) {
-      notes = notes.where((note) => note.tags.contains(tag));
-    }
+    notes = notes.asyncMap((note) async {
+      if (type != null && note.type != type) return null;
+      if (state != null && await note.state != state) return null;
+      if (tag != null && !(await note.tags).contains(tag))
+        return null;
+      else
+        return note;
+    });
+    notes = notes.where((note) => note != null);
+    List<Note> notesList = await notes.toList();
     if (sort != null) {
-      List<Note> notesList = await notes.toList();
       notesList.sort((a, b) {
         switch (sort) {
           case NoteSort.Title:
@@ -134,14 +147,20 @@ class NoteManager {
         }
         return 0;
       });
-      notes = Stream.fromIterable(notesList);
     }
-    return notes.toList();
+    return notesList;
   }
 
   static Future<Set<String>> listTags() async {
+    // return <String>{};
+    Set<String> tags = {};
     List<Note> notes = await list();
-    return notes.expand((note) => note.tags).toSet();
+    for (var note in notes) {
+      tags.addAll(await note.tags);
+    }
+    return tags;
+    // Stream<Note> notes = list().asStream().expand((notes) => notes);
+    // return notes.asyncMap((note) => note.tags).expand((tags) => tags).toSet();
   }
 
   static Future add() async {

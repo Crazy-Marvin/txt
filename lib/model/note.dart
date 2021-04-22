@@ -3,10 +3,13 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+import 'package:json2yaml/json2yaml.dart';
 import 'package:markdown/markdown.dart' as md;
 import 'package:path/path.dart';
 import 'package:txt/markdown/renderer.dart';
 import 'package:txt/util/string_extension.dart';
+import 'package:yaml/yaml.dart';
 
 enum NoteType { Txt, Md }
 
@@ -15,68 +18,88 @@ enum NoteState { Normal, Archived, Trashed }
 enum NoteSort { Title, LastModified }
 
 @immutable
+class NoteSettings {
+  final NoteState state;
+  final Set<String> tags;
+
+  NoteSettings(this.state, this.tags);
+
+  factory NoteSettings.fromYaml(String yaml) {
+    final YamlMap settings = loadYamlNode(yaml);
+    final bool trashed = settings.nodes["trashed"].value;
+    final bool archived = settings.nodes["archived"].value;
+    final NoteState state = trashed
+        ? NoteState.Trashed
+        : archived
+        ? NoteState.Archived
+        : NoteState.Normal;
+    final YamlNode dynamicTags = settings.nodes["tags"];
+    Set<String> tags = {};
+    if (dynamicTags is YamlList) {
+      tags = dynamicTags.nodes.map((tag) => tag.value.toString()).toSet();
+    }
+    return NoteSettings(state, tags);
+  }
+
+  String toYaml() {
+    Map<String, dynamic> settings = {
+      "trashed": state == NoteState.Trashed,
+      "archived": state == NoteState.Archived,
+      "tags": tags.toList(growable: false)
+    };
+    return json2yaml(settings);
+  }
+}
+
 /// Represents a note file.
-///
-/// The file name is always in the form `<title>.<tags>.<state>.<extension>`.
+@immutable
 class Note {
   final File file;
-  final List<String> _basenameParts;
 
-  static const String _basenameSeparator = ".";
-  static const String _tagSeparator = " ";
-
-  Note(this.file)
-      : _basenameParts = basename(file.path).split(_basenameSeparator);
-
-  String _lastBasenamePart(int index) =>
-      _basenameParts[_basenameParts.length - 1 - index];
+  Note(this.file);
 
   NoteType get type {
-    var extension = _lastBasenamePart(0);
-    switch (extension) {
-      case "md":
+    switch (extension(file.path)) {
+      case ".md":
         return NoteType.Md;
-      case "txt":
+      case ".txt":
       default:
         return NoteType.Txt;
     }
   }
 
-  NoteState get state {
-    var state = _lastBasenamePart(1);
-    switch (state) {
-      case "trash":
-        return NoteState.Trashed;
-      case "archive":
-        return NoteState.Archived;
-      case "normal":
-      default:
-        return NoteState.Normal;
-    }
+  static const String _frontMatterSeparator = "---";
+
+  Future<String> get _frontMatter async {
+    if (!await _lines.contains(_frontMatterSeparator)) return "";
+    return await _lines
+        .takeWhile((line) => line != _frontMatterSeparator)
+        .join("\n");
   }
 
-  List<String> get tags {
-    var tags = _lastBasenamePart(2);
-    if (tags == "") return [];
-    return _lastBasenamePart(2)
-        .split(" ")
-        .map((tag) => tag.capitalize())
-        .toList();
+  Future<NoteSettings> get _settings async {
+    return NoteSettings.fromYaml(await _frontMatter);
   }
+
+  Future<NoteState> get state async => (await _settings).state;
+
+  Future<Set<String>> get tags async => (await _settings).tags;
 
   String get title {
-//    return _basenameParts.first;
-    return _basenameParts
-        .sublist(0, _basenameParts.length - 3)
-        .join(_basenameSeparator)
-        .capitalize();
+    return basenameWithoutExtension(file.path).capitalize();
   }
 
   Stream<List<int>> get _stream => file.openRead();
 
+  Stream<String> get _lines =>
+      _stream.transform(Utf8Decoder()).transform(LineSplitter());
+
   Future<String> get excerpt async {
-    Stream<String> lines =
-        _stream.transform(Utf8Decoder()).transform(LineSplitter());
+    final bool hasFrontMatter = await _lines.contains(_frontMatterSeparator);
+    Stream<String> lines = _lines;
+    if (hasFrontMatter) {
+      lines = lines.skipWhile((line) => line != _frontMatterSeparator).skip(1);
+    }
     switch (type) {
       case NoteType.Txt:
         break;
