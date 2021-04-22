@@ -59,7 +59,7 @@ BrightnessBased<ThemeData> getBrightnessBasedThemeData(AppColorScheme theme) {
       colorScheme = ColorScheme.dark(
         primary: Color(0xFF6D0081),
         primaryVariant: Color(0xFF6D0081),
-        secondary: Color(0xFFAC11B7),
+        secondary: Color(0xFFEAABF3),
         secondaryVariant: Color(0xFF6D0081),
         surface: Color(0xFF6D0081),
         background: Color(0xFF35023E),
@@ -73,13 +73,20 @@ BrightnessBased<ThemeData> getBrightnessBasedThemeData(AppColorScheme theme) {
       throw StateError("Auto theme is delegate to light and dark theme.");
   }
   var baseTheme = ThemeData.from(colorScheme: colorScheme).copyWith(
-    buttonTheme: ButtonThemeData(
-      colorScheme: colorScheme.copyWith(
-        primary: colorScheme.secondary,
-        primaryVariant: colorScheme.secondaryVariant,
-      ),
-      textTheme: ButtonTextTheme.primary,
+    toggleableActiveColor: colorScheme.secondary,
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(primary: colorScheme.secondary),
     ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(primary: colorScheme.secondary),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(primary: colorScheme.secondary),
+    ),
+    floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: theme == AppColorScheme.Purple
+            ? colorScheme.secondaryVariant
+            : colorScheme.secondary),
   );
   return baseTheme
       .copyWith(

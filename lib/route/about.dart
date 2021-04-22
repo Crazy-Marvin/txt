@@ -98,7 +98,7 @@ class _ContributorCard extends StatelessWidget {
     List<Widget> buttons = [];
     if (githubUrl != null) {
       buttons.add(
-        OutlineButton(
+        OutlinedButton(
           child: Text("GitHub".toUpperCase()),
           onPressed: () => _launchUrl(githubUrl, context),
         ),
@@ -106,7 +106,7 @@ class _ContributorCard extends StatelessWidget {
     }
     if (twitterUrl != null) {
       buttons.add(
-        OutlineButton(
+        OutlinedButton(
           child: Text("Twitter".toUpperCase()),
           onPressed: () => _launchUrl(twitterUrl, context),
         ),
@@ -114,7 +114,7 @@ class _ContributorCard extends StatelessWidget {
     }
     if (webUrl != null) {
       buttons.add(
-        OutlineButton(
+        OutlinedButton(
           child: Text("Website".toUpperCase()),
           onPressed: () => _launchUrl(webUrl, context),
         ),
