@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:preferences/preferences.dart';
+import 'package:pref/pref.dart';
 import 'package:txt/route/about.dart';
 import 'package:txt/route/themes.dart';
 import 'package:txt/widget/system_ui.dart';
@@ -19,7 +19,7 @@ class SettingsScreen extends StatelessWidget {
       await launch(url);
     } else {
       final snackBar = SnackBar(content: Text('Could not find email program.'));
-      Scaffold.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
@@ -30,10 +30,10 @@ class SettingsScreen extends StatelessWidget {
         appBar: AppBar(
           title: Text('Settings'.toUpperCase()),
         ),
-        body: PreferencePage([
-          PreferenceTitle(
-            "General".toUpperCase(),
-            leftPadding: 16,
+        body: PrefPage(children: [
+          PrefTitle(
+            title: Text("General".toUpperCase()),
+            padding: EdgeInsets.only(left: 16),
           ),
           ListTile(
             title: Text("App theme"),
@@ -45,40 +45,40 @@ class SettingsScreen extends StatelessWidget {
               Navigator.pushNamed(context, ThemesScreen.routeName);
             },
           ),
-          SwitchPreference(
-            "Enable file extensions",
-            "file_extensions",
-            desc: "Titles will show the file extension",
+          PrefSwitch(
+            title: Text("Enable file extensions"),
+            subtitle: Text("Titles will show the file extension"),
+            pref: "file_extensions",
           ),
-          PreferenceTitle(
-            "Notes".toUpperCase(),
-            leftPadding: 16,
+          PrefTitle(
+            title: Text("Notes".toUpperCase()),
+            padding: EdgeInsets.only(left: 16),
           ),
-          SwitchPreference(
-            "Enable Microsoft Windows compatibility",
-            "windows_compatibility",
+          PrefSwitch(
+            title: Text("Enable Microsoft Windows compatibility"),
+            pref: "windows_compatibility",
           ),
-          SwitchPreference(
-            "Autocomplete Note titles",
-            "autocomplete",
+          PrefSwitch(
+            title: Text("Autocomplete Note titles"),
+            pref: "autocomplete",
           ),
-          PreferenceTitle(
-            "Editor".toUpperCase(),
-            leftPadding: 16,
+          PrefTitle(
+            title: Text("Editor".toUpperCase()),
+            padding: EdgeInsets.only(left: 16),
           ),
-          SwitchPreference(
-            "Markdown toolbar",
-            "markdown_toolbar",
-            desc: "Enable the quick-access toolbar",
+          PrefSwitch(
+            title: Text("Markdown toolbar"),
+            subtitle: Text("Enable the quick-access toolbar"),
+            pref: "markdown_toolbar",
           ),
-          SwitchPreference(
-            "Start with preview",
-            "start_with_preview",
-            desc: "Show preview when opening notes",
+          PrefSwitch(
+            title: Text("Start with preview"),
+            subtitle: Text("Show preview when opening notes"),
+            pref: "start_with_preview",
           ),
-          PreferenceTitle(
-            "About".toUpperCase(),
-            leftPadding: 16,
+          PrefTitle(
+            title: Text("About".toUpperCase()),
+            padding: EdgeInsets.only(left: 16),
           ),
           ListTile(
             title: Text("About txt"),
