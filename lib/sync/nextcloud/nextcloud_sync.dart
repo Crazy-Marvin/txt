@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart';
 import 'package:nextcloud/nextcloud.dart';
-import 'package:nextcloud/nextcloud.dart' as nc;
 import 'package:path/path.dart';
 import 'package:txt/sync/file.dart';
 import 'package:txt/sync/sync.dart';
@@ -14,15 +13,18 @@ class NextcloudSyncService extends SyncService {
   @override
   Future<void> authorize(BuildContext context) async {
     // TODO Show login GUI.
-    client = NextCloudClient(
-        "cloud.reimer.family", "test", "jx@Wf*FfLknD+F=,MpUXHi&~veKtKq:=");
+    client = NextCloudClient.withCredentials(
+      Uri.parse("https://cloud.reimer.family"),
+      "test",
+      "jx@Wf*FfLknD+F=,MpUXHi&~veKtKq:=",
+    );
     // TODO Test connection e.g. via user backend.
   }
 
   @override
   Future<String> getAccountName() async {
-    nc.MetaData metadata = await client.users.getMetaData(client.username);
-    return "${metadata.fullName} (${client.username})";
+    UserData user = await client.user.getUser();
+    return "${user.displayName} (${user.id})";
   }
 
   @override
