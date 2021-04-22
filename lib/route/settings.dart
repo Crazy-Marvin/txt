@@ -25,80 +25,97 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    ThemeData theme = Theme.of(context);
+    TextStyle prefTitleTextStyle =
+        theme.textTheme.subtitle1.copyWith(color: theme.colorScheme.secondary);
     return SystemUiOverlayRegion(
       child: Scaffold(
         appBar: AppBar(
           title: Text('Settings'.toUpperCase()),
         ),
-        body: PrefPage(children: [
-          PrefTitle(
-            title: Text("General".toUpperCase()),
-            padding: EdgeInsets.only(left: 16),
-          ),
-          ListTile(
-            title: Text("App theme"),
-            trailing: Icon(
-              TxtIcons.theme,
-              color: Theme.of(context).colorScheme.secondary,
+        body: PrefPage(
+          children: [
+            PrefTitle(
+              title: Text(
+                "General".toUpperCase(),
+                style: prefTitleTextStyle,
+              ),
+              padding: EdgeInsets.only(top: 16),
             ),
-            onTap: () {
-              Navigator.pushNamed(context, ThemesScreen.routeName);
-            },
-          ),
-          PrefSwitch(
-            title: Text("Enable file extensions"),
-            subtitle: Text("Titles will show the file extension"),
-            pref: "file_extensions",
-          ),
-          PrefTitle(
-            title: Text("Notes".toUpperCase()),
-            padding: EdgeInsets.only(left: 16),
-          ),
-          PrefSwitch(
-            title: Text("Enable Microsoft Windows compatibility"),
-            pref: "windows_compatibility",
-          ),
-          PrefSwitch(
-            title: Text("Autocomplete Note titles"),
-            pref: "autocomplete",
-          ),
-          PrefTitle(
-            title: Text("Editor".toUpperCase()),
-            padding: EdgeInsets.only(left: 16),
-          ),
-          PrefSwitch(
-            title: Text("Markdown toolbar"),
-            subtitle: Text("Enable the quick-access toolbar"),
-            pref: "markdown_toolbar",
-          ),
-          PrefSwitch(
-            title: Text("Start with preview"),
-            subtitle: Text("Show preview when opening notes"),
-            pref: "start_with_preview",
-          ),
-          PrefTitle(
-            title: Text("About".toUpperCase()),
-            padding: EdgeInsets.only(left: 16),
-          ),
-          ListTile(
-            title: Text("About txt"),
-            leading: Icon(
-              TxtIcons.information,
-              color: Theme.of(context).colorScheme.secondary,
+            ListTile(
+              title: Text("App theme"),
+              trailing: Icon(
+                TxtIcons.theme,
+                color: theme.colorScheme.secondary,
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, ThemesScreen.routeName);
+              },
             ),
-            onTap: () {
-              Navigator.pushNamed(context, AboutScreen.routeName);
-            },
-          ),
-          ListTile(
-            title: Text("Send feedback"),
-            leading: Icon(
-              TxtIcons.feedback,
-              color: Theme.of(context).colorScheme.secondary,
+            PrefSwitch(
+              title: Text("Enable file extensions"),
+              subtitle: Text("Titles will show the file extension"),
+              pref: "file_extensions",
             ),
-            onTap: () => _sendFeedback(context),
-          ),
-        ]),
+            PrefTitle(
+              title: Text(
+                "Notes".toUpperCase(),
+                style: prefTitleTextStyle,
+              ),
+              padding: EdgeInsets.only(top: 16),
+            ),
+            PrefSwitch(
+              title: Text("Enable Microsoft Windows compatibility"),
+              pref: "windows_compatibility",
+            ),
+            PrefSwitch(
+              title: Text("Autocomplete Note titles"),
+              pref: "autocomplete",
+            ),
+            PrefTitle(
+              title: Text(
+                "Editor".toUpperCase(),
+                style: prefTitleTextStyle,
+              ),
+              padding: EdgeInsets.only(top: 16),
+            ),
+            PrefSwitch(
+              title: Text("Markdown toolbar"),
+              subtitle: Text("Enable the quick-access toolbar"),
+              pref: "markdown_toolbar",
+            ),
+            PrefSwitch(
+              title: Text("Start with preview"),
+              subtitle: Text("Show preview when opening notes"),
+              pref: "start_with_preview",
+            ),
+            PrefTitle(
+              title: Text(
+                "About".toUpperCase(),
+                style: prefTitleTextStyle,
+              ),
+              padding: EdgeInsets.only(top: 16),
+            ),
+            ListTile(
+              title: Text("About txt"),
+              leading: Icon(
+                TxtIcons.information,
+                color: theme.colorScheme.secondary,
+              ),
+              onTap: () {
+                Navigator.pushNamed(context, AboutScreen.routeName);
+              },
+            ),
+            ListTile(
+              title: Text("Send feedback"),
+              leading: Icon(
+                TxtIcons.feedback,
+                color: theme.colorScheme.secondary,
+              ),
+              onTap: () => _sendFeedback(context),
+            ),
+          ],
+        ),
       ),
     );
   }

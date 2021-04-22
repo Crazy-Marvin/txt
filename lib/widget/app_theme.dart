@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:provider/single_child_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:txt/themes.dart';
 
-class AppTheme extends SingleChildStatelessWidget {
+class AppTheme extends StatelessWidget {
   static const AppColorScheme _defaultColorScheme = AppColorScheme.Auto;
 
-  AppTheme({Key key, Widget child}) : super(key: key, child: child);
+  @required
+  final WidgetBuilder _builder;
+
+  AppTheme({
+    Key key,
+    @required WidgetBuilder builder,
+  })  : _builder = builder,
+        super(key: key);
 
   static AppThemeEditor of(BuildContext context, {bool listen = true}) =>
       Provider.of<_Notifier>(context, listen: listen);
 
   @override
-  Widget buildWithChild(BuildContext context, Widget child) {
+  Widget build(BuildContext context) {
     return ChangeNotifierProvider(
       create: (_) => _Notifier(_defaultColorScheme),
-      child: child,
+      child: Builder(builder: _builder),
     );
   }
 }
