@@ -30,7 +30,7 @@ class AboutScreen extends StatelessWidget {
                 style: Theme
                     .of(context)
                     .textTheme
-                    .headline,
+                    .headline5,
                 textAlign: TextAlign.center,
               ),
             ),
@@ -89,7 +89,7 @@ class _ContributorCard extends StatelessWidget {
       await launch(url);
     } else {
       final snackBar = SnackBar(content: Text('Could not open link.'));
-      Scaffold.of(context).showSnackBar(snackBar);
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
     }
   }
 
