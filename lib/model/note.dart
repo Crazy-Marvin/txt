@@ -15,11 +15,9 @@ enum NoteState { Normal, Archived, Trashed }
 enum NoteSort { Title, LastModified }
 
 @immutable
-/**
- * Represents a note file.
- *
- * The file name is always in the form `<title>.<tags>.<state>.<extension>`.
- */
+/// Represents a note file.
+///
+/// The file name is always in the form `<title>.<tags>.<state>.<extension>`.
 class Note {
   final File file;
   final List<String> _basenameParts;

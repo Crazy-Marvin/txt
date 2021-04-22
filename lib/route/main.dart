@@ -96,7 +96,7 @@ class _MainScreenState extends State<MainScreen> {
                       onPressed: () {
                         final snackBar =
                             SnackBar(content: Text('Create new file.'));
-                        Scaffold.of(context).showSnackBar(snackBar);
+                        ScaffoldMessenger.of(context).showSnackBar(snackBar);
                       },
                       label: Text('New draft'.toUpperCase()),
                       icon: Icon(TxtIcons.add),

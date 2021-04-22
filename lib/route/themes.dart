@@ -75,7 +75,7 @@ class _ColorSchemeCard extends StatelessWidget {
     this.subtitle,
     this.description,
     this.icon,
-  });
+  }) : super(key: key);
 
   _isThemeSelected(BuildContext context) {
     return AppTheme.of(context).colorScheme == colorScheme;
@@ -108,7 +108,7 @@ class _ColorSchemeCard extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
               child: Text(
                 subtitle,
-                style: Theme.of(context).textTheme.subtitle,
+                style: Theme.of(context).textTheme.subtitle2,
               ),
             ),
           );
@@ -119,7 +119,7 @@ class _ColorSchemeCard extends StatelessWidget {
               padding: EdgeInsets.only(bottom: 16, left: 16, right: 16),
               child: Text(
                 description,
-                style: Theme.of(context).textTheme.body1,
+                style: Theme.of(context).textTheme.bodyText2,
               ),
             ),
           );

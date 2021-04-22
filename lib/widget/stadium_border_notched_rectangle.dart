@@ -50,27 +50,30 @@ class StadiumBorderNotchedRectangle implements NotchedShape {
     final double p2yA = sqrt(r * r - p2xA * p2xA);
     final double p2yB = sqrt(r * r - p2xB * p2xB);
 
-    final List<Offset> p = List<Offset>(6);
-
     // p0, p1, and p2 are the control points for segment A.
-    p[0] = Offset(a - s1, b);
-    p[1] = Offset(a, b);
-    final double cmp = b < 0 ? -1.0 : 1.0;
-    p[2] = cmp * p2yA > cmp * p2yB ? Offset(p2xA, p2yA) : Offset(p2xB, p2yB);
+    Offset p0 = Offset(a - s1, b);
+    Offset p1 = Offset(a, b);
+    double cmp = b < 0 ? -1.0 : 1.0;
+    Offset p2 = cmp * p2yA > cmp * p2yB ? Offset(p2xA, p2yA) : Offset(p2xB, p2yB);
 
     // p3, p4, and p5 are the control points for segment B, which is a mirror
     // of segment A around the y axis.
-    p[3] = Offset(-1.0 * p[2].dx, p[2].dy);
-    p[4] = Offset(-1.0 * p[1].dx, p[1].dy);
-    p[5] = Offset(-1.0 * p[0].dx, p[0].dy);
+    Offset p3 = Offset(-1.0 * p2.dx, p2.dy);
+    Offset p4 = Offset(-1.0 * p1.dx, p1.dy);
+    Offset p5 = Offset(-1.0 * p0.dx, p0.dy);
 
     // translate all points back to the absolute coordinate system.
-    for (int i = 0; i < p.length; i += 1) p[i] += guest.center;
+    p0 += guest.center;
+    p1 += guest.center;
+    p2 += guest.center;
+    p3 += guest.center;
+    p4 += guest.center;
+    p5 += guest.center;
 
     return Path()
       ..moveTo(host.left, host.top)
-      ..lineTo(p[0].dx, p[0].dy)
-      ..quadraticBezierTo(p[1].dx, p[1].dy, p[2].dx, p[2].dy)
+      ..lineTo(p0.dx, p0.dy)
+      ..quadraticBezierTo(p1.dx, p1.dy, p2.dx, p2.dy)
       ..arcToPoint(
         guest.bottomLeft + Offset(guest.height / 2, 0),
         radius: Radius.circular(guest.height / 2),
@@ -78,11 +81,11 @@ class StadiumBorderNotchedRectangle implements NotchedShape {
       )
       ..lineTo(guest.right - guest.height / 2, guest.bottom)
       ..arcToPoint(
-        p[3],
+        p3,
         radius: Radius.circular(guest.height / 2),
         clockwise: false,
       )
-      ..quadraticBezierTo(p[4].dx, p[4].dy, p[5].dx, p[5].dy)
+      ..quadraticBezierTo(p4.dx, p4.dy, p5.dx, p5.dy)
       ..lineTo(host.right, host.top)
       ..lineTo(host.right, host.bottom)
       ..lineTo(host.left, host.bottom)
