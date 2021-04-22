@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter/services.dart';
 import 'package:txt/route/about.dart';
 import 'package:txt/route/editor.dart';
@@ -40,6 +41,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
+    debugPaintSizeEnabled = false;
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
       DeviceOrientation.portraitDown,
