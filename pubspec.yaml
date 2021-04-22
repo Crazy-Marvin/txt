@@ -46,7 +46,7 @@ flutter:
     fonts:
     - asset: assets/icons/Txt.ttf
   assets:
-  - secrets.yaml
+#  - secrets.yaml
   - assets/icon-squircle.png
   - assets/avatars/janheinrichreimer.png
   - assets/avatars/kevinaguilar.png
