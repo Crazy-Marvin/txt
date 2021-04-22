@@ -14,7 +14,6 @@ class MainMenu extends StatelessWidget {
   final NoteStateCallback noteStateCallback;
   final String noteTag;
   final NoteTagCallback noteTagCallback;
-  final ScrollController controller;
 
   const MainMenu({
     Key key,
@@ -22,7 +21,6 @@ class MainMenu extends StatelessWidget {
     @required this.noteStateCallback,
     this.noteTag,
     @required this.noteTagCallback,
-    this.controller,
   }) : super(key: key);
 
   @override
@@ -42,14 +40,17 @@ class MainMenu extends StatelessWidget {
           child: FutureBuilder(
             future: NoteManager.listTags(),
             builder: (context, snapshot) {
-              return _MainMenuList(
-                noteState: noteState,
-                noteStateCallback: noteStateCallback,
-                noteTag: noteTag,
-                noteTagCallback: noteTagCallback,
-                tags: snapshot.data,
-                controller: controller,
-              );
+              if (snapshot.hasData) {
+                return _MainMenuList(
+                  noteState: noteState,
+                  noteStateCallback: noteStateCallback,
+                  noteTag: noteTag,
+                  noteTagCallback: noteTagCallback,
+                  tags: snapshot.data,
+                );
+              } else {
+                return CircularProgressIndicator();
+              }
             },
           ),
         ),

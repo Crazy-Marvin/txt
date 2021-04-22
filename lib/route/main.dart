@@ -24,7 +24,7 @@ class _MainScreenState extends State<MainScreen> {
     showMaterialModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
-      builder: (builder, controller) => MainMenu(
+      builder: (builder) => MainMenu(
         noteState: _noteState,
         noteStateCallback: (state) {
           Navigator.of(context).pop();
@@ -32,7 +32,9 @@ class _MainScreenState extends State<MainScreen> {
             _noteState = state;
           });
         },
-        controller: controller,
+        noteTagCallback: (tag) {
+          Navigator.of(context).pop();
+        },
       ),
     );
   }
