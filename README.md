@@ -6,7 +6,7 @@
 [![Issues](https://img.shields.io/github/issues/Crazy-Marvin/txt.svg?style=flat-square)](https://github.com/Crazy-Marvin/txt/issues)
 [![Pull requests](https://img.shields.io/github/issues-pr/Crazy-Marvin/txt.svg?style=flat-square)](https://github.com/Crazy-Marvin/txt/pulls)
 [![Coverage](https://img.shields.io/codecov/c/github/Crazy-Marvin/txt?style=flat-square)](https://codecov.io/gh/Crazy-Marvin/txt)
-[![Translations](https://img.shields.io/badge/crowdin-translations-blue?style=flat-square)](https://crowdin.com/project/txtapp)
+[![Translations](https://img.shields.io/badge/hosted_weblate-translations-blue?style=flat-square)](https://hosted.weblate.org)
 [![Google Play](https://img.shields.io/badge/google%20play-app%20not%20found-red?style=flat-square)](https://play.google.com/store/apps/details?id=rocks.poopjournal.txt)
 [![F-Droid](https://img.shields.io/f-droid/v/rocks.poopjournal.txt?style=flat-square)](https://f-droid.org/en/packages/rocks.poopjournal.txt/)
 
