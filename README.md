@@ -1,5 +1,6 @@
 [![CI](https://img.shields.io/github/workflow/status/Crazy-Marvin/txt/CI?style=flat-square)](https://github.com/Crazy-Marvin/txt/actions?query=workflow%3ACI)
 [![License](https://img.shields.io/github/license/Crazy-Marvin/txt.svg?style=flat-square)](LICENSE)
+[![style: very good analysis](https://img.shields.io/badge/style-very_good_analysis-B22C89.svg?style=flat-square)](https://pub.dev/packages/very_good_analysis)
 [![Last commit](https://img.shields.io/github/last-commit/Crazy-Marvin/txt.svg?style=flat-square)](https://github.com/Crazy-Marvin/txt/commits)
 [![Releases](https://img.shields.io/github/downloads/Crazy-Marvin/txt/total.svg?style=flat-square)](https://github.com/Crazy-Marvin/txt/releases)
 [![Latest tag](https://img.shields.io/github/tag/Crazy-Marvin/txt.svg?style=flat-square)](https://github.com/Crazy-Marvin/txt/tags)
