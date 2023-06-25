@@ -28,6 +28,10 @@ Simple text editor/notepad with cloud sync.
 https://f-droid.org/en/docs/Build_Metadata_Reference/#autoupdatemode,  
 https://gitlab.com/fdroid/fdroiddata/blob/master/CONTRIBUTING.md
 
+## Status
+
+Development is on hold because I started using Nextcloud Notes.
+
 ## Legal
 See our [terms of service](legal/terms-of-service.pdf) 
 and [privacy policy](legal/privacy-policy.pdf).
